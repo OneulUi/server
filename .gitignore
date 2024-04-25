@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Ignore application-API-KEY.yml file
+!/src/main/resources/application-API-KEY.yml
