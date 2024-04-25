@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    include:
+      - API-KEY
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${api.google.client-id}
+            client-secret: ${api.google.client-secret}
+            scope:
+              - email
+              - profile
+jwt:
+  key: ${api.jwt.key}
