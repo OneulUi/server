@@ -28,6 +28,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	implementation 'org.apache.poi:poi-ooxml:4.1.2'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'

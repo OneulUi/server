@@ -55,7 +55,7 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(matcherRegistry -> {
                     matcherRegistry
-                            .requestMatchers("/", "/auth/success").permitAll()
+                            .requestMatchers("/", "/auth/success", "/weather/**").permitAll()
                             .requestMatchers(PathRequest.toH2Console()).permitAll()
                             .anyRequest().authenticated();
                 })
