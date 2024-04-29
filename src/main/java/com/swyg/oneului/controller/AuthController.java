@@ -7,6 +7,7 @@ import com.swyg.oneului.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +23,7 @@ public class AuthController {
     private final MemberService memberService;
 
     @GetMapping("/success")
-    public ResponseEntity<ApiResponse<?>> getSuccessResponseWithAccessToken(
+    public ResponseEntity<ApiResponse<MemberDTO>> getSuccessResponseWithAccessToken(
             @RequestParam(name = "accessToken") String accessToken,
             @RequestParam(name = "loginId") String loginId) {
 
@@ -33,7 +34,7 @@ public class AuthController {
     }
 
     @GetMapping("/after-login")
-    public String getTextAfterLogin() {
+    public String getTextAfterLogin(Authentication authentication) {
         return "SUCCESS AUTHENTICATION";
     }
 }

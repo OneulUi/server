@@ -28,3 +28,5 @@ spring:
               - profile
 jwt:
   key: ${api.jwt.key}
+weather:
+  key: ${api.weather.key}

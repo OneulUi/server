@@ -37,4 +37,4 @@ out/
 .vscode/
 
 # Ignore application-API-KEY.yml file
-!/src/main/resources/application-API-KEY.yml
+application-API-KEY.yml

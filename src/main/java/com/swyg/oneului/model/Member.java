@@ -9,11 +9,13 @@ import java.util.Map;
 @Getter
 @Entity
 public class Member extends BaseEntity {
+    // TODO loginId가 두 번 들어왔을 때, Exception 처리해야함
     @Id
     @GeneratedValue
     private Long userId;
     private String email;
     private String name;
+    @Column(unique = true)
     private String loginId;
     private String provider;
     private String providerId;
