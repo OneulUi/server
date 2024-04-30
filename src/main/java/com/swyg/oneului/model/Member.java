@@ -10,6 +10,7 @@ import java.util.Map;
 @Entity
 public class Member extends BaseEntity {
     // TODO loginId가 두 번 들어왔을 때, Exception 처리해야함
+    // TODO RefreshToken 캐시로 변경 예정
     @Id
     @GeneratedValue
     private Long userId;
@@ -22,6 +23,10 @@ public class Member extends BaseEntity {
     private String refreshToken;
     @Enumerated(EnumType.STRING)
     private MemberRole role;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "survey_id")
+    private Survey survey;
 
     public Member() {
     }
@@ -52,5 +57,9 @@ public class Member extends BaseEntity {
                 .providerId(providerId)
                 .role(MemberRole.USER)
                 .build();
+    }
+
+    public void initSurvey(Survey survey) {
+        this.survey = survey;
     }
 }
