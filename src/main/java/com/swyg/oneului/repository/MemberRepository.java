@@ -18,7 +18,7 @@ public class MemberRepository {
     }
 
     public List<Member> findMemberByLoginId(String loginId) {
-        return entityManager.createQuery("select m from Member m where m.loginId = :loginId", Member.class)
+        return entityManager.createQuery("select m from Member m left join m.survey where m.loginId = :loginId", Member.class)
                 .setParameter("loginId", loginId)
                 .getResultList();
     }
