@@ -50,19 +50,17 @@ jobs:
             sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/oneul-server
             sudo docker image prune -f
 
-      - name: Deploy to develop
+      - name: Deploy to dev
         uses: appleboy/ssh-action@master
         id: deploy-dev
         if: contains(github.ref, 'develop')
         with:
           host: ${{ secrets.HOST_DEV }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: 22
-          key: ${{ secrets.EC2_KEY }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }} // ec2 key
+          envs: GITHUB_SHA
           script: |
+            sudo docker ps
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/oneul-server
-            docker stop $(docker ps -a -q) 
-            docker rm $(docker ps -a -q) 
             sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/oneul-server
-            docker image prune -f
+            sudo docker image prune -f
