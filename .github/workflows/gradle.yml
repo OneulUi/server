@@ -17,7 +17,9 @@ jobs:
           distribution: 'temurin'
           
       - name: Build with Gradle
-        run: chmod +x ./gradlew build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build
 
       - name: Docker build & push to prod
         if: contains(github.ref, 'master')
