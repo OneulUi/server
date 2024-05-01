@@ -1,6 +1,6 @@
 package com.swyg.oneului.controller;
 
-import com.swyg.oneului.common.ApiResponse;
+import com.swyg.oneului.common.CommonApiResponse;
 import com.swyg.oneului.controller.doc.MemberControllerDoc;
 import com.swyg.oneului.dto.MemberDTO;
 import com.swyg.oneului.dto.SurveyDTO;
@@ -22,18 +22,20 @@ public class MemberController implements MemberControllerDoc {
     private final SurveyService surveyService;
 
     @PostMapping("/survey")
-    public void updateMemberSurvey(Authentication authentication, @RequestBody SurveyDTO surveyDTO) {
+    public ResponseEntity<CommonApiResponse<?>> updateMemberSurvey(Authentication authentication, @RequestBody SurveyDTO surveyDTO) {
         String loginId = authentication.getName();
         Survey survey = surveyService.findSurveyBySurveyId(surveyDTO.getSurveyId());
 
         memberService.updateMemberSurvey(loginId, survey);
+
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
 
     @GetMapping("/survey")
-    public ResponseEntity<ApiResponse<MemberDTO>> getMemberAndSurveyByLoginId(Authentication authentication) {
+    public ResponseEntity<CommonApiResponse<MemberDTO>> getMemberAndSurveyByLoginId(Authentication authentication) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberAndSurveyByLoginId(loginId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.createSuccess(MemberDTO.of(member)));
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(MemberDTO.of(member)));
     }
 }

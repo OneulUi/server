@@ -1,6 +1,7 @@
 package com.swyg.oneului.dto;
 
 import com.swyg.oneului.model.Weather;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +12,17 @@ import java.util.List;
 @Setter
 @Getter
 public class WeatherDTO {
+    @Schema(description = "날씨 항목 카테고리 코드")
     private String category;
+    @Schema(description = "예측 일자")
     private String fcstDate;
+    @Schema(description = "예측 시간")
     private String fcstTime;
+    @Schema(description = "예측 값 코드")
     private String fcstValue;
+    @Schema(description = "날씨 항목 카테고리 값")
     private String convertCategory;
+    @Schema(description = "예측 값")
     private String convertFcstValue;
 
     @Builder

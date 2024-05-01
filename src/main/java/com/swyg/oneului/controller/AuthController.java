@@ -1,6 +1,7 @@
 package com.swyg.oneului.controller;
 
-import com.swyg.oneului.common.ApiResponse;
+import com.swyg.oneului.common.CommonApiResponse;
+import com.swyg.oneului.controller.doc.AuthControllerDoc;
 import com.swyg.oneului.dto.MemberDTO;
 import com.swyg.oneului.model.Member;
 import com.swyg.oneului.service.MemberService;
@@ -13,24 +14,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 @RestController
-public class AuthController {
+public class AuthController implements AuthControllerDoc {
     private final MemberService memberService;
 
     @GetMapping("/success")
-    public ResponseEntity<ApiResponse<MemberDTO>> getSuccessResponseWithAccessToken(
+    public ResponseEntity<CommonApiResponse<MemberDTO>> getSuccessResponseWithAccessToken(
             @RequestParam(name = "accessToken") String accessToken,
             @RequestParam(name = "loginId") String loginId) {
 
         Member loginedMember = memberService.findMemberByLoginId(loginId);
         MemberDTO memberDTO = MemberDTO.of(loginedMember);
 
-        return ResponseEntity.status(HttpStatus.OK).header("accessToken", accessToken).body(ApiResponse.createSuccess(memberDTO));
+        return ResponseEntity.status(HttpStatus.OK).header("accessToken", accessToken).body(CommonApiResponse.createSuccess(memberDTO));
     }
 
     @GetMapping("/after-login")

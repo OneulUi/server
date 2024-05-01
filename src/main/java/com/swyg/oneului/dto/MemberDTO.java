@@ -2,6 +2,7 @@ package com.swyg.oneului.dto;
 
 import com.swyg.oneului.model.Member;
 import com.swyg.oneului.model.MemberRole;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,10 +10,15 @@ import lombok.Setter;
 @Setter
 @Getter
 public class MemberDTO {
+    @Schema(description = "회원 PK")
     private Long userId;
+    @Schema(description = "회원 이메일")
     private String email;
+    @Schema(description = "회원 이름")
     private String name;
+    @Schema(description = "회원 권한")
     private MemberRole role;
+    @Schema(description = "회원이 선택한 설문 정보")
     private SurveyDTO survey;
 
     public MemberDTO() {

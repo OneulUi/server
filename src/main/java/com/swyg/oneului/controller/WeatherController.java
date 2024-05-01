@@ -1,6 +1,7 @@
 package com.swyg.oneului.controller;
 
-import com.swyg.oneului.common.ApiResponse;
+import com.swyg.oneului.common.CommonApiResponse;
+import com.swyg.oneului.controller.doc.WeatherControllerDoc;
 import com.swyg.oneului.dto.WeatherDTO;
 import com.swyg.oneului.model.AddressPosition;
 import com.swyg.oneului.model.Weather;
@@ -20,21 +21,23 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/weather")
 @RestController
-public class WeatherController {
+public class WeatherController implements WeatherControllerDoc {
     private final WeatherService weatherService;
     private final ExcelCacheLoader excelCacheLoader;
 
     @GetMapping("/current")
-    public ResponseEntity<ApiResponse<List<WeatherDTO>>> getCurrentWeather(@RequestParam String baseDate, @RequestParam String address) throws IOException {
+    public ResponseEntity<CommonApiResponse<List<WeatherDTO>>> getCurrentWeather(@RequestParam String baseDate, @RequestParam String address) throws IOException {
         AddressPosition addressPosition = excelCacheLoader.getPositionFromAddressCache(address);
         List<Weather.Item> currentWeather = weatherService.getCurrentWeather(baseDate, addressPosition.getNx(), addressPosition.getNy());
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.createSuccess(WeatherDTO.listOf(currentWeather)));
+
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(WeatherDTO.listOf(currentWeather)));
     }
 
     @GetMapping("/hourly")
-    public ResponseEntity<ApiResponse<List<WeatherDTO>>> getHourlyWeather(@RequestParam String baseDate, @RequestParam String address) throws IOException {
+    public ResponseEntity<CommonApiResponse<List<WeatherDTO>>> getHourlyWeather(@RequestParam String baseDate, @RequestParam String address) throws IOException {
         AddressPosition addressPosition = excelCacheLoader.getPositionFromAddressCache(address);
         List<Weather.Item> hourlyWeathers = weatherService.getHourlyWeather(baseDate, addressPosition.getNx(), addressPosition.getNy());
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.createSuccess(WeatherDTO.listOf(hourlyWeathers)));
+
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(WeatherDTO.listOf(hourlyWeathers)));
     }
 }

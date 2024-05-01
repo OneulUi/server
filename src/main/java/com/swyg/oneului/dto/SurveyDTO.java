@@ -12,10 +12,10 @@ import java.util.List;
 @Setter
 @Getter
 public class SurveyDTO {
-    @Schema(description = "설문지 PK", defaultValue = "1L")
+    @Schema(description = "설문 정보 PK", defaultValue = "1")
     private Long surveyId;
 
-    @Schema(description = "설문지 옵션", defaultValue = "지훈님 option이 뭔지 모르겠어요.. ㅋㅋ")
+    @Schema(description = "설문 항목")
     private String option;
 
     public SurveyDTO() {
