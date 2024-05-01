@@ -1,6 +1,7 @@
 package com.swyg.oneului.controller;
 
 import com.swyg.oneului.common.ApiResponse;
+import com.swyg.oneului.controller.doc.MemberControllerDoc;
 import com.swyg.oneului.dto.MemberDTO;
 import com.swyg.oneului.dto.SurveyDTO;
 import com.swyg.oneului.model.Member;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/member")
 @RestController
-public class MemberController {
+public class MemberController implements MemberControllerDoc {
     private final MemberService memberService;
     private final SurveyService surveyService;
 
