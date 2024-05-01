@@ -1,6 +1,7 @@
 package com.swyg.oneului.dto;
 
 import com.swyg.oneului.model.Survey;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +12,10 @@ import java.util.List;
 @Setter
 @Getter
 public class SurveyDTO {
+    @Schema(description = "설문지 PK", defaultValue = "1L")
     private Long surveyId;
+
+    @Schema(description = "설문지 옵션", defaultValue = "지훈님 option이 뭔지 모르겠어요.. ㅋㅋ")
     private String option;
 
     public SurveyDTO() {
