@@ -14,6 +14,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 
 @Component
@@ -25,7 +26,7 @@ public class ExcelCacheLoader {
     }
 
     public void extractExcelData() throws IOException{
-        try(FileInputStream inputStream = new FileInputStream(ResourceUtils.getFile("classpath:address.xlsx"))) {
+        try(InputStream inputStream = getClass().getResourceAsStream("/address.xlsx")) {
             ZipSecureFile.setMinInflateRatio(0);
             Workbook workbook = new XSSFWorkbook(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
