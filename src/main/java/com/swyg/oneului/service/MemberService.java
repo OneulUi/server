@@ -28,7 +28,6 @@ public class MemberService {
         if (!members.isEmpty()) {
             Member member = members.get(0);
             Survey survey = member.getSurvey();
-            Long surveyId = survey.getSurveyId();
 
             return member;
         }
