@@ -42,4 +42,13 @@ public class MemberService {
             member.initSurvey(survey);
         }
     }
+
+    @Transactional
+    public void updateMemberProfile(String loginId, Member member) {
+        List<Member> members = memberRepository.findMemberByLoginId(loginId);
+        if (!members.isEmpty()) {
+            Member loginedMember = members.get(0);
+            loginedMember.updateProfile(member);
+        }
+    }
 }

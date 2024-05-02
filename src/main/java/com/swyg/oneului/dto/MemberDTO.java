@@ -16,6 +16,10 @@ public class MemberDTO {
     private String email;
     @Schema(description = "회원 이름")
     private String name;
+    @Schema(description = "회원 소개")
+    private String introduction;
+    @Schema(description = "배경 색상")
+    private String backgroundColor;
     @Schema(description = "회원 권한")
     private MemberRole role;
     @Schema(description = "회원이 선택한 설문 정보")
@@ -25,10 +29,12 @@ public class MemberDTO {
     }
 
     @Builder
-    public MemberDTO(Long userId, String email, String name, MemberRole role, SurveyDTO survey) {
+    public MemberDTO(Long userId, String email, String name, String introduction, String backgroundColor, MemberRole role, SurveyDTO survey) {
         this.userId = userId;
         this.email = email;
         this.name = name;
+        this.introduction = introduction;
+        this.backgroundColor = backgroundColor;
         this.role = role;
         this.survey = survey;
     }
@@ -38,6 +44,8 @@ public class MemberDTO {
                 .userId(member.getUserId())
                 .email(member.getEmail())
                 .name(member.getName())
+                .introduction(member.getIntroduction())
+                .backgroundColor(member.getBackgroundColor())
                 .role(member.getRole())
                 .build();
 

@@ -1,5 +1,6 @@
 package com.swyg.oneului.model;
 
+import com.swyg.oneului.dto.MemberDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,8 @@ public class Member extends BaseEntity {
     private Long userId;
     private String email;
     private String name;
+    private String introduction;
+    private String backgroundColor;
     @Column(unique = true)
     private String loginId;
     private String provider;
@@ -32,26 +35,31 @@ public class Member extends BaseEntity {
     }
 
     @Builder
-    public Member(Long userId, String email, String name, String loginId, String provider, String providerId, String refreshToken, MemberRole role) {
+    public Member(Long userId, String email, String name, String introduction, String backgroundColor, String loginId, String provider, String providerId, String refreshToken, MemberRole role, Survey survey) {
         this.userId = userId;
         this.email = email;
         this.name = name;
+        this.introduction = introduction;
+        this.backgroundColor = backgroundColor;
         this.loginId = loginId;
         this.provider = provider;
         this.providerId = providerId;
         this.refreshToken = refreshToken;
         this.role = role;
+        this.survey = survey;
     }
 
     public static Member toEntity(String provider, Map<String, Object> attributes) {
         String email = (String) attributes.get("email");
         String name = (String) attributes.get("name");
+        String backgroundColor = "#ffffff";
         String providerId = (String) attributes.get("sub");
         String loginId = provider + "_" + providerId;
 
         return Member.builder()
                 .email(email)
                 .name(name)
+                .backgroundColor(backgroundColor)
                 .loginId(loginId)
                 .provider(provider)
                 .providerId(providerId)
@@ -61,5 +69,22 @@ public class Member extends BaseEntity {
 
     public void initSurvey(Survey survey) {
         this.survey = survey;
+    }
+
+    public void updateProfile(Member member) {
+        this.name = member.getName();
+        this.introduction = member.getIntroduction();
+        this.backgroundColor = member.getBackgroundColor();
+    }
+
+    public static Member of(MemberDTO memberDTO) {
+        return Member.builder()
+                .userId(memberDTO.getUserId())
+                .email(memberDTO.getEmail())
+                .name(memberDTO.getName())
+                .introduction(memberDTO.getIntroduction())
+                .backgroundColor(memberDTO.getBackgroundColor())
+                .role(memberDTO.getRole())
+                .build();
     }
 }

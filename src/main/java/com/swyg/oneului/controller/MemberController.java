@@ -22,7 +22,7 @@ public class MemberController implements MemberControllerDoc {
     private final SurveyService surveyService;
 
     @PostMapping("/survey")
-    public ResponseEntity<CommonApiResponse<?>> updateMemberSurvey(Authentication authentication, @RequestBody SurveyDTO surveyDTO) {
+    public ResponseEntity<CommonApiResponse<?>> updateMemberSurveyByLoginId(Authentication authentication, @RequestBody SurveyDTO surveyDTO) {
         String loginId = authentication.getName();
         Survey survey = surveyService.findSurveyBySurveyId(surveyDTO.getSurveyId());
 
@@ -37,5 +37,21 @@ public class MemberController implements MemberControllerDoc {
         Member member = memberService.findMemberAndSurveyByLoginId(loginId);
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(MemberDTO.of(member)));
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<CommonApiResponse<MemberDTO>> getMemberByLoginId(Authentication authentication) {
+        String loginId = authentication.getName();
+        Member member = memberService.findMemberAndSurveyByLoginId(loginId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(MemberDTO.of(member)));
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<CommonApiResponse<?>> updateMemberProfileByLoginId(Authentication authentication, @RequestBody MemberDTO memberDTO) {
+        String loginId = authentication.getName();
+        memberService.updateMemberProfile(loginId, Member.of(memberDTO));
+
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
 }
