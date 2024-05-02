@@ -21,15 +21,32 @@ public interface MemberControllerDoc {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
     @PostMapping("/member/survey")
-    ResponseEntity<CommonApiResponse<?>> updateMemberSurvey(
+    ResponseEntity<CommonApiResponse<?>> updateMemberSurveyByLoginId(
             @Parameter(description = "인증 객체", required = true) Authentication authentication,
             @Parameter(description = "설문 정보 DTO", required = true) @RequestBody SurveyDTO surveyDTO);
 
-    @Operation(summary = "회원 정보 조회 API")
+    @Operation(summary = "회원 정보와 설문 정보 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
     @GetMapping("/member/survey")
     ResponseEntity<CommonApiResponse<MemberDTO>> getMemberAndSurveyByLoginId(
             @Parameter(description = "인증 객체", required = true) Authentication authentication);
+
+    @Operation(summary = "회원 정보 조회 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
+    @GetMapping("/current")
+    ResponseEntity<CommonApiResponse<MemberDTO>> getMemberByLoginId(
+            @Parameter(description = "인증 객체", required = true) Authentication authentication);
+
+    @Operation(summary = "회원 정보 수정 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
+    @PostMapping("/update")
+    ResponseEntity<CommonApiResponse<?>> updateMemberProfileByLoginId(
+            @Parameter(description = "인증 객체", required = true) Authentication authentication,
+            @Parameter(description = "회원 수정 관련 정보 DTO", required = true) @RequestBody MemberDTO memberDTO);
 }
