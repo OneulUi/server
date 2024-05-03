@@ -2,6 +2,7 @@ package com.swyg.oneului.config;
 
 import com.swyg.oneului.security.JwtAuthenticationEntryPoint;
 import com.swyg.oneului.security.TokenAuthenticationFilter;
+import com.swyg.oneului.security.oauth2.OAuth2AuthorizationRequestRepository;
 import com.swyg.oneului.security.oauth2.OAuth2SuccessHandler;
 import com.swyg.oneului.service.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import java.util.Arrays;
 public class SecurityConfig {
     private final OAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -69,6 +71,9 @@ public class SecurityConfig {
                 })
                 .oauth2Login(oAuth2LoginConfigurer -> {
                     oAuth2LoginConfigurer
+                            .authorizationEndpoint(endpointConfig -> {
+                                endpointConfig.authorizationRequestRepository(oAuth2AuthorizationRequestRepository);
+                            })
                             .userInfoEndpoint(userInfoEndpointConfig -> {
                                 userInfoEndpointConfig.userService(oAuth2UserService);
                             })
