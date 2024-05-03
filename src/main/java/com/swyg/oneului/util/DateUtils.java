@@ -12,6 +12,13 @@ public class DateUtils {
         return previousDate.format(DateTimeFormatter.BASIC_ISO_DATE);
     }
 
+    public static String getPreviousTwoDate() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate previousTwoDate = currentDate.minusDays(2);
+
+        return previousTwoDate.format(DateTimeFormatter.BASIC_ISO_DATE);
+    }
+
     public static String getFormattedNowDate() {
         LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH00");
