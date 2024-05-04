@@ -16,21 +16,21 @@ public class SurveyDTO {
     private Long surveyId;
 
     @Schema(description = "설문 항목")
-    private String option;
+    private String options;
 
     public SurveyDTO() {
     }
 
     @Builder
-    public SurveyDTO(Long surveyId, String option) {
+    public SurveyDTO(Long surveyId, String options) {
         this.surveyId = surveyId;
-        this.option = option;
+        this.options = options;
     }
 
     public static SurveyDTO of(Survey survey) {
         return SurveyDTO.builder()
                 .surveyId(survey.getSurveyId())
-                .option(survey.getOption())
+                .options(survey.getOptions())
                 .build();
     }
 
