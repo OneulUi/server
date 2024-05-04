@@ -1,32 +1,18 @@
 package com.swyg.oneului.repository;
 
 import com.swyg.oneului.model.Member;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Repository
-public class MemberRepository {
-    private final EntityManager entityManager;
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    public Member save(Member member) {
-        entityManager.persist(member);
-        return member;
-    }
+    List<Member> findMemberByLoginId(String loginId);
 
-    public List<Member> findMemberByLoginId(String loginId) {
-        return entityManager.createQuery("select m from Member m left join m.survey where m.loginId = :loginId", Member.class)
-                .setParameter("loginId", loginId)
-                .getResultList();
-    }
-
-    public void updateRefreshToken(String refreshToken, String loginId) {
-        entityManager.createQuery("update Member m set m.refreshToken = :refreshToken where m.loginId = :loginId")
-                .setParameter("refreshToken", refreshToken)
-                .setParameter("loginId", loginId)
-                .executeUpdate();
-    }
+    @Query("update Member m set m.refreshToken = :refreshToken where m.loginId = :loginId")
+    void updateRefreshToken(@Param("refreshToken") String refreshToken, @Param("loginId") String loginId);
 }

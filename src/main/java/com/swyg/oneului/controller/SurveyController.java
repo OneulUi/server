@@ -22,7 +22,7 @@ public class SurveyController implements SurveyControllerDoc {
 
     @GetMapping("/options")
     public ResponseEntity<CommonApiResponse<List<SurveyDTO>>> getAllSurveys() {
-        List<Survey> surveys = surveyService.findAllSurveys();
-        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(SurveyDTO.listOf(surveys)));
+//        List<Survey> surveys = surveyService.findAllSurveys();
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(SurveyDTO.listOf(null)));
     }
 }

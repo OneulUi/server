@@ -41,7 +41,7 @@ public class MemberDTO {
 
     public static MemberDTO of(Member member) {
         MemberDTO memberDTO = MemberDTO.builder()
-                .userId(member.getUserId())
+                .userId(member.getMemberId())
                 .email(member.getEmail())
                 .name(member.getName())
                 .introduction(member.getIntroduction())
