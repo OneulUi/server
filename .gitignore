@@ -38,3 +38,4 @@ out/
 
 # Ignore application-API-KEY.yml file
 application-API-KEY.yml
+application-dev.yml

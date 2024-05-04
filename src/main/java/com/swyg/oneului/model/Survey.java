@@ -1,25 +1,26 @@
 package com.swyg.oneului.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Entity
+@NoArgsConstructor
 public class Survey extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long surveyId;
-    private String option;
-    private int weight;
 
-    public Survey() {
-    }
+    @Column(name = "options") // mysql 예약어
+    private String option;
+
+    @Column(name = "weights")
+    private int weight; // mysql 예약어
 
     @Builder
     public Survey(Long surveyId, String option, int weight) {

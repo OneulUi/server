@@ -4,26 +4,37 @@ import com.swyg.oneului.dto.MemberDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 @Getter
 @Entity
+@NoArgsConstructor
 public class Member extends BaseEntity {
     // TODO loginId가 두 번 들어왔을 때, Exception 처리해야함
     // TODO RefreshToken 캐시로 변경 예정
     @Id
-    @GeneratedValue
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long memberId;
+
     private String email;
+
     private String name;
+
     private String introduction;
+
     private String backgroundColor;
+
     @Column(unique = true)
     private String loginId;
+
     private String provider;
+
     private String providerId;
+
     private String refreshToken;
+
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
@@ -31,12 +42,9 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "survey_id")
     private Survey survey;
 
-    public Member() {
-    }
-
     @Builder
-    public Member(Long userId, String email, String name, String introduction, String backgroundColor, String loginId, String provider, String providerId, String refreshToken, MemberRole role, Survey survey) {
-        this.userId = userId;
+    public Member(Long memberId, String email, String name, String introduction, String backgroundColor, String loginId, String provider, String providerId, String refreshToken, MemberRole role, Survey survey) {
+        this.memberId = memberId;
         this.email = email;
         this.name = name;
         this.introduction = introduction;
@@ -79,7 +87,7 @@ public class Member extends BaseEntity {
 
     public static Member of(MemberDTO memberDTO) {
         return Member.builder()
-                .userId(memberDTO.getUserId())
+                .memberId(memberDTO.getUserId())
                 .email(memberDTO.getEmail())
                 .name(memberDTO.getName())
                 .introduction(memberDTO.getIntroduction())

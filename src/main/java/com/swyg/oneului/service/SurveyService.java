@@ -18,9 +18,7 @@ public class SurveyService {
     @Transactional
     public void initSurveyOptions() {
         List<Survey> surveys = Survey.initSurveyOptions();
-        for (Survey survey : surveys) {
-            surveyRepository.save(survey);
-        }
+        surveyRepository.saveAll(surveys);
     }
 
     public Survey findSurveyBySurveyId(Long surveyId) {
@@ -29,6 +27,6 @@ public class SurveyService {
     }
 
     public List<Survey> findAllSurveys() {
-        return surveyRepository.findAllSurveys();
+        return surveyRepository.findAll();
     }
 }
