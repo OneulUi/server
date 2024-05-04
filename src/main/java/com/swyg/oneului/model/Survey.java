@@ -15,18 +15,14 @@ public class Survey extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long surveyId;
-
-    @Column(name = "options") // mysql 예약어
-    private String option;
-
-    @Column(name = "weights")
-    private int weight; // mysql 예약어
+    private String options;
+    private int weights;
 
     @Builder
-    public Survey(Long surveyId, String option, int weight) {
+    public Survey(Long surveyId, String options, int weights) {
         this.surveyId = surveyId;
-        this.option = option;
-        this.weight = weight;
+        this.options = options;
+        this.weights = weights;
     }
 
     public static List<Survey> initSurveyOptions() {
@@ -42,8 +38,8 @@ public class Survey extends BaseEntity {
         List<Survey> surveys = new ArrayList<>();
         for (String option : options) {
             Survey survey = Survey.builder()
-                    .option(option)
-                    .weight(weight--)
+                    .options(option)
+                    .weights(weight--)
                     .build();
 
             surveys.add(survey);
