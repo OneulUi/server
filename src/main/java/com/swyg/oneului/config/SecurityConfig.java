@@ -52,16 +52,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(AbstractHttpConfigurer::disable) // csrf 비활성화
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .httpBasic(AbstractHttpConfigurer::disable) // 기본 인증 로그인 비활성화
-                .formLogin(AbstractHttpConfigurer::disable) // 기본 login form 비활성화
-                .logout(AbstractHttpConfigurer::disable) // 기본 logout 비활성화
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
                 .headers(headersConfigurer -> {
                     headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin);
                 })
                 .sessionManagement(sessionManagementConfigurer -> {
-                    sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션 사용하지 않음
+                    sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests(matcherRegistry -> {
                     matcherRegistry
@@ -80,7 +80,6 @@ public class SecurityConfig {
                             .successHandler(oAuth2SuccessHandler);
                 })
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(new TokenExceptionFilter(), tokenAuthenticationFilter.getClass())
                 .exceptionHandling(exceptionHandlingConfigurer -> {
                     exceptionHandlingConfigurer
                             .authenticationEntryPoint(jwtAuthenticationEntryPoint);
@@ -96,6 +95,7 @@ public class SecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 }

@@ -46,7 +46,7 @@ public class TokenProvider {
     public void generateRefreshToken(Authentication authentication) {
         String refreshToken = generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
         String loginId = authentication.getName();
-//        tokenService.updateRefreshToken(refreshToken, loginId);
+        tokenService.updateRefreshToken(refreshToken, loginId);
     }
 
     private String generateToken(Authentication authentication, long expireTime) {
