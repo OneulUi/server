@@ -1,7 +1,7 @@
 name: Backend CD
 on:
   push:
-    branches: [master, develop]
+    branches: ["master", "develop"]
 
 jobs:
   build:
@@ -15,7 +15,28 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          
+
+      # 운영환경 프로퍼티
+#      - name: make application-prod.yml
+#        if: |
+#          contains(github.ref, 'main') ||
+#          contains(github.ref, 'develop')
+#        run: |
+#          cd ./src/main/resources
+#          touch ./application-prod.yml
+#          echo "${{ secrets.YML_PROD }}" > ./application-prod.yml
+#        shell: bash
+
+      # 개발환경 프로퍼티
+      - name: make application-dev.yml
+        if: |
+          contains(github.ref, 'develop')
+        run: |
+          rm -f ./src/main/resources/application-dev.yml
+          echo "${{ secrets.YML_DEV }}" > ./src/main/resources/application-dev.yml
+        shell: bash
+
+      # 빌드
       - name: Build with Gradle
         run: |
           chmod +x ./gradlew
@@ -40,9 +61,9 @@ jobs:
         id: deploy-prod
         if: contains(github.ref, 'master')
         with:
-          host: ${{ secrets.HOST_DEV }} // 운영서버 배포시 변경 필요
+          host: ${{ secrets.HOST_DEV }}
           username: ubuntu
-          key: ${{ secrets.EC2_KEY }} // ec2 key
+          key: ${{ secrets.EC2_KEY }}
           envs: GITHUB_SHA
           script: |
             sudo docker ps
@@ -57,7 +78,7 @@ jobs:
         with:
           host: ${{ secrets.HOST_DEV }}
           username: ubuntu
-          key: ${{ secrets.EC2_KEY }} // ec2 key
+          key: ${{ secrets.EC2_KEY }}
           envs: GITHUB_SHA
           script: |
             sudo docker ps
