@@ -17,20 +17,19 @@ jobs:
           distribution: 'temurin'
 
       # 운영환경 프로퍼티
-      - name: make application-prod.yml
-        if: |
-          contains(github.ref, 'main') ||
-          contains(github.ref, 'develop')
-        run: |
-          cd ./src/main/resources
-          touch ./application-prod.yml
-          echo "${{ secrets.YML_PROD }}" > ./application-dev.yml
-        shell: bash
+#      - name: make application-prod.yml
+#        if: |
+#          contains(github.ref, 'main') ||
+#          contains(github.ref, 'develop')
+#        run: |
+#          cd ./src/main/resources
+#          touch ./application-prod.yml
+#          echo "${{ secrets.YML_PROD }}" > ./application-prod.yml
+#        shell: bash
 
       # 개발환경 프로퍼티
       - name: make application-dev.yml
         if: |
-          contains(github.ref, 'main') ||
           contains(github.ref, 'develop')
         run: |
           rm -f ./src/main/resources/application-dev.yml
