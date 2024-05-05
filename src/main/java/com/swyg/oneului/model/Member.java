@@ -6,14 +6,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Getter
 @Entity
 @NoArgsConstructor
 public class Member extends BaseEntity {
-    // TODO loginId가 두 번 들어왔을 때, Exception 처리해야함
-    // TODO RefreshToken 캐시로 변경 예정
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
@@ -41,6 +41,9 @@ public class Member extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "survey_id")
     private Survey survey;
+
+    @OneToMany(mappedBy = "member")
+    private List<Ootd> ootds = new ArrayList<>();
 
     @Builder
     public Member(Long memberId, String email, String name, String introduction, String backgroundColor, String loginId, String provider, String providerId, String refreshToken, MemberRole role, Survey survey) {
@@ -77,6 +80,11 @@ public class Member extends BaseEntity {
 
     public void initSurvey(Survey survey) {
         this.survey = survey;
+    }
+
+    public void addOotd(Ootd ootd) {
+        this.ootds.add(ootd);
+        ootd.initMember(this);
     }
 
     public void updateProfile(Member member) {
