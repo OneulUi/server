@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class HelloController implements HelloControllerDoc {
+
     @GetMapping("/hello")
     public String hello() {
         log.info("hello 호출");
-        return "hello";
+        return "hello dev";
     }
 }
