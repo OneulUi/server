@@ -10,49 +10,85 @@ import lombok.Setter;
 @Setter
 @Getter
 public class MemberDTO {
-    @Schema(description = "회원 PK")
-    private Long userId;
-    @Schema(description = "회원 이메일")
-    private String email;
-    @Schema(description = "회원 이름")
-    private String name;
-    @Schema(description = "회원 소개")
-    private String introduction;
-    @Schema(description = "배경 색상")
-    private String backgroundColor;
-    @Schema(description = "회원 권한")
-    private MemberRole role;
-    @Schema(description = "회원이 선택한 설문 정보")
-    private SurveyDTO survey;
+    @Setter
+    @Getter
+    public static class Request {
+        @Schema(description = "회원 이메일")
+        private String email;
 
-    public MemberDTO() {
-    }
+        @Schema(description = "회원 이름")
+        private String name;
 
-    @Builder
-    public MemberDTO(Long userId, String email, String name, String introduction, String backgroundColor, MemberRole role, SurveyDTO survey) {
-        this.userId = userId;
-        this.email = email;
-        this.name = name;
-        this.introduction = introduction;
-        this.backgroundColor = backgroundColor;
-        this.role = role;
-        this.survey = survey;
-    }
+        @Schema(description = "회원 소개")
+        private String introduction;
 
-    public static MemberDTO of(Member member) {
-        MemberDTO memberDTO = MemberDTO.builder()
-                .userId(member.getMemberId())
-                .email(member.getEmail())
-                .name(member.getName())
-                .introduction(member.getIntroduction())
-                .backgroundColor(member.getBackgroundColor())
-                .role(member.getRole())
-                .build();
+        @Schema(description = "배경 색상", example = "#fffff와 같은 형태로 작성해주세요.")
+        private String backgroundColor;
 
-        if (member.getSurvey() != null) {
-            memberDTO.setSurvey(SurveyDTO.of(member.getSurvey()));
+        public Request() {
         }
 
-        return memberDTO;
+        @Builder
+        public Request(String email, String name, String introduction, String backgroundColor) {
+            this.email = email;
+            this.name = name;
+            this.introduction = introduction;
+            this.backgroundColor = backgroundColor;
+        }
+
+        public static Member toEntity(MemberDTO.Request memberDTO) {
+            return Member.builder()
+                    .email(memberDTO.getEmail())
+                    .name(memberDTO.getName())
+                    .introduction(memberDTO.getIntroduction())
+                    .backgroundColor(memberDTO.getBackgroundColor())
+                    .build();
+        }
+    }
+
+    @Setter
+    @Getter
+    public static class Response {
+        @Schema(description = "회원 고유 번호")
+        private Long memberId;
+
+        @Schema(description = "회원 이메일")
+        private String email;
+
+        @Schema(description = "회원 이름")
+        private String name;
+
+        @Schema(description = "회원 소개")
+        private String introduction;
+
+        @Schema(description = "배경 색상")
+        private String backgroundColor;
+
+        @Schema(description = "회원이 선택한 설문 정보")
+        private SurveyDTO.Response survey;
+
+        public Response() {
+        }
+
+        @Builder
+        public Response(Long memberId, String email, String name, String introduction, String backgroundColor, SurveyDTO.Response survey) {
+            this.memberId = memberId;
+            this.email = email;
+            this.name = name;
+            this.introduction = introduction;
+            this.backgroundColor = backgroundColor;
+            this.survey = survey;
+        }
+
+        public static MemberDTO.Response of(Member member) {
+            return Response.builder()
+                    .memberId(member.getMemberId())
+                    .email(member.getEmail())
+                    .name(member.getName())
+                    .introduction(member.getIntroduction())
+                    .backgroundColor(member.getBackgroundColor())
+                    .survey(SurveyDTO.Response.of(member.getSurvey()))
+                    .build();
+        }
     }
 }

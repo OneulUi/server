@@ -21,12 +21,12 @@ public class AuthController implements AuthControllerDoc {
     private final MemberService memberService;
 
     @GetMapping("/success")
-    public ResponseEntity<CommonApiResponse<MemberDTO>> getSuccessResponseWithAccessToken(
+    public ResponseEntity<CommonApiResponse<MemberDTO.Response>> getSuccessResponseWithAccessToken(
             @RequestParam(name = "accessToken") String accessToken,
             @RequestParam(name = "loginId") String loginId) {
 
         Member loginedMember = memberService.findMemberByLoginId(loginId);
-        MemberDTO memberDTO = MemberDTO.of(loginedMember);
+        MemberDTO.Response memberDTO = MemberDTO.Response.of(loginedMember);
 
         return ResponseEntity.status(HttpStatus.OK).header("accessToken", accessToken).body(CommonApiResponse.createSuccess(memberDTO));
     }

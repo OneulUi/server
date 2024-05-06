@@ -16,7 +16,7 @@ public class CommonApiResponse<T> {
     private static final String ERROR_STATUS = "error";
 
     private static final String SUCCESS_MESSAGE = "정상적으로 처리되었습니다.";
-    private static final String FAIL_MESSAGE = "처리 중 오류가 발생했습니다.";
+    private static final String FAIL_MESSAGE = "유효하지 않은 값을 입력하셨습니다.";
 
     private String status;
     private T data;
@@ -39,7 +39,6 @@ public class CommonApiResponse<T> {
         return new CommonApiResponse<>(SUCCESS_STATUS, null, SUCCESS_MESSAGE);
     }
 
-    // Hibernate Validator에 의해 유효하지 않은 데이터로 인해 API 호출이 거부될때 반환
     public static CommonApiResponse<?> createFail(BindingResult bindingResult) {
         Map<String, String> errors = new HashMap<>();
 

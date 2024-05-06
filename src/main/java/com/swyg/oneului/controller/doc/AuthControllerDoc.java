@@ -19,7 +19,7 @@ public interface AuthControllerDoc {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
     @GetMapping("/auth/success")
-    public ResponseEntity<CommonApiResponse<MemberDTO>> getSuccessResponseWithAccessToken(
+    public ResponseEntity<CommonApiResponse<MemberDTO.Response>> getSuccessResponseWithAccessToken(
             @Parameter(description = "인증 토큰", required = true) @RequestParam(name = "accessToken") String accessToken,
             @Parameter(description = "로그인된 아이디", required = true) @RequestParam(name = "loginId") String loginId);
 }

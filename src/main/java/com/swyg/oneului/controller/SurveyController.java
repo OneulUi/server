@@ -21,8 +21,8 @@ public class SurveyController implements SurveyControllerDoc {
     private final SurveyService surveyService;
 
     @GetMapping("/options")
-    public ResponseEntity<CommonApiResponse<List<SurveyDTO>>> getAllSurveys() {
+    public ResponseEntity<CommonApiResponse<List<SurveyDTO.Response>>> getAllSurveys() {
         List<Survey> surveys = surveyService.findAllSurveys();
-        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(SurveyDTO.listOf(surveys)));
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(SurveyDTO.Response.listOf(surveys)));
     }
 }

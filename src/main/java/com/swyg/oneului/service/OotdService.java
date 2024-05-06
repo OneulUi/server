@@ -43,14 +43,14 @@ public class OotdService {
         Long ootdId = ootd.getOotdId();
         Ootd existingOotd = ootdRepository.findById(ootdId)
                 .orElseThrow(() -> new NoSuchElementException("해당 ID의 OOTD가 존재하지 않습니다."));
-        existingOotd.updateOotd(ootd);
+        existingOotd.modifyOotd(ootd);
         
         // OOTD 이미지 수정
         ootdImageService.replaceOotdImage(existingOotd, image);
     }
 
     @Transactional
-    public void deleteOotdByOotdId(Ootd ootd) {
+    public void deleteOotdById(Ootd ootd) {
         ootdImageService.deleteOotdImage(ootd);
         ootdRepository.delete(ootd);
     }

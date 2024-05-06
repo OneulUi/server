@@ -16,11 +16,8 @@ public class BookMarkOotd {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ootdId")
+    @JoinColumn(name = "ootd_id")
     private Ootd ootd;
-
-    public BookMarkOotd() {
-    }
 
     @Builder
     public BookMarkOotd(Long bookMarkOotdId, Member member, Ootd ootd) {
