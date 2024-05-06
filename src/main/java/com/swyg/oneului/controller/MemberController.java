@@ -31,14 +31,6 @@ public class MemberController implements MemberControllerDoc {
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
 
-    @GetMapping("/survey")
-    public ResponseEntity<CommonApiResponse<MemberDTO>> getMemberAndSurveyByLoginId(Authentication authentication) {
-        String loginId = authentication.getName();
-        Member member = memberService.findMemberAndSurveyByLoginId(loginId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(MemberDTO.of(member)));
-    }
-
     @GetMapping("/current")
     public ResponseEntity<CommonApiResponse<MemberDTO>> getMemberByLoginId(Authentication authentication) {
         String loginId = authentication.getName();
