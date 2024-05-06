@@ -15,34 +15,33 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@RequestMapping("/member")
 @RestController
 public class MemberController implements MemberControllerDoc {
     private final MemberService memberService;
     private final SurveyService surveyService;
 
-    @PostMapping("/survey")
-    public ResponseEntity<CommonApiResponse<?>> updateMemberSurveyByLoginId(Authentication authentication, @RequestBody SurveyDTO surveyDTO) {
+    @GetMapping("/member")
+    public ResponseEntity<CommonApiResponse<MemberDTO.Response>> getMemberProfileByLoginId(Authentication authentication) {
         String loginId = authentication.getName();
-        Survey survey = surveyService.findSurveyBySurveyId(surveyDTO.getSurveyId());
+        Member member = memberService.findMemberAndSurveyByLoginId(loginId);
 
-        memberService.updateMemberSurvey(loginId, survey);
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(MemberDTO.Response.of(member)));
+    }
+
+    @PutMapping("/member")
+    public ResponseEntity<CommonApiResponse<?>> updateMemberProfileByLoginId(Authentication authentication, @RequestBody MemberDTO.Request memberDTO) {
+        String loginId = authentication.getName();
+        memberService.updateMemberProfile(loginId, MemberDTO.Request.toEntity(memberDTO));
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
 
-    @GetMapping("/current")
-    public ResponseEntity<CommonApiResponse<MemberDTO>> getMemberByLoginId(Authentication authentication) {
+    @PostMapping("/member/survey")
+    public ResponseEntity<CommonApiResponse<?>> updateMemberSurveyByLoginId(Authentication authentication, @RequestBody SurveyDTO.Request surveyDTO) {
         String loginId = authentication.getName();
-        Member member = memberService.findMemberAndSurveyByLoginId(loginId);
+        Survey survey = surveyService.findSurveyBySurveyId(surveyDTO.getSurveyId());
 
-        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(MemberDTO.of(member)));
-    }
-
-    @PostMapping("/update")
-    public ResponseEntity<CommonApiResponse<?>> updateMemberProfileByLoginId(Authentication authentication, @RequestBody MemberDTO memberDTO) {
-        String loginId = authentication.getName();
-        memberService.updateMemberProfile(loginId, Member.of(memberDTO));
+        memberService.updateMemberSurvey(loginId, survey);
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }

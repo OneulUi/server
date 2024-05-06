@@ -21,16 +21,16 @@ public interface WeatherControllerDoc {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
     @GetMapping("/weather/current")
-    ResponseEntity<CommonApiResponse<List<WeatherDTO>>> getCurrentWeather(
-            @Parameter(description = "날짜", required = true, example = "20240501") @RequestParam String baseDate,
-            @Parameter(description = "주소", required = true, example = "서울특별시/강서구") @RequestParam String address) throws IOException;
+    ResponseEntity<CommonApiResponse<List<WeatherDTO.Response>>> getCurrentWeather(
+            @Parameter(description = "날짜", required = true, example = "20240505") @RequestParam String baseDate,
+            @Parameter(description = "주소", required = true, example = "서울특별시 강서구") @RequestParam String address) throws IOException;
 
     @Operation(summary = "당일 날씨 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
     @GetMapping("/weather/hourly")
-    ResponseEntity<CommonApiResponse<List<WeatherDTO>>> getHourlyWeather(
-            @Parameter(description = "날짜", required = true, example = "20240501") @RequestParam String baseDate,
-            @Parameter(description = "주소", required = true, example = "서울특별시/강서구") @RequestParam String address) throws IOException;
+    ResponseEntity<CommonApiResponse<List<WeatherDTO.Response>>> getHourlyWeather(
+            @Parameter(description = "날짜", required = true, example = "20240505") @RequestParam String baseDate,
+            @Parameter(description = "주소", required = true, example = "서울특별시 강서구") @RequestParam String address) throws IOException;
 }

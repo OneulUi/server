@@ -11,27 +11,58 @@ import java.util.List;
 @Setter
 @Getter
 public class OotdImageDTO {
-    private Long ootdImageId;
-    private String fileName;
+    @Setter
+    @Getter
+    public static class Request {
+        private Long ootdImageId;
+        private String fileName;
 
-    @Builder
-    public OotdImageDTO(Long ootdImageId, String fileName) {
-        this.ootdImageId = ootdImageId;
-        this.fileName = fileName;
-    }
-
-    public static OotdImageDTO of(OotdImage ootdImage) {
-        return OotdImageDTO.builder()
-                .ootdImageId(ootdImage.getOotdImageId())
-                .fileName(ootdImage.getFileName())
-                .build();
-    }
-
-    public static List<OotdImageDTO> listOf(List<OotdImage> ootdImages) {
-        List<OotdImageDTO> ootdImageDTOS = new ArrayList<>();
-        for (OotdImage ootdImage : ootdImages) {
-            ootdImageDTOS.add(OotdImageDTO.of(ootdImage));
+        public Request() {
         }
-        return ootdImageDTOS;
+
+        @Builder
+        public Request(Long ootdImageId, String fileName) {
+            this.ootdImageId = ootdImageId;
+            this.fileName = fileName;
+        }
+
+        public static OotdImage toEntity(OotdImageDTO.Request ootdImageDTO) {
+            return OotdImage.builder()
+                    .ootdImageId(ootdImageDTO.getOotdImageId())
+                    .fileName(ootdImageDTO.getFileName())
+                    .build();
+        }
+    }
+
+    @Setter
+    @Getter
+    public static class Response {
+        private Long ootdImageId;
+        private String fileName;
+
+        public Response() {
+        }
+
+        @Builder
+        public Response(Long ootdImageId, String fileName) {
+            this.ootdImageId = ootdImageId;
+            this.fileName = fileName;
+        }
+
+        public static OotdImageDTO.Response of(OotdImage ootdImage) {
+            return OotdImageDTO.Response.builder()
+                    .ootdImageId(ootdImage.getOotdImageId())
+                    .fileName(ootdImage.getFileName())
+                    .build();
+        }
+
+        public static List<OotdImageDTO.Response> listOf(List<OotdImage> ootdImages) {
+            List<OotdImageDTO.Response> responses = new ArrayList<>();
+            for (OotdImage ootdImage : ootdImages) {
+                responses.add(OotdImageDTO.Response.of(ootdImage));
+            }
+
+            return responses;
+        }
     }
 }

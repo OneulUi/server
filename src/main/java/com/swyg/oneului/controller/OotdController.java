@@ -29,27 +29,27 @@ public class OotdController implements OotdControllerDoc {
     private final MemberService memberService;
 
     @GetMapping("/ootds")
-    public ResponseEntity<CommonApiResponse<List<OotdDTO>>> getAllOotd() {
+    public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotd() {
         List<Ootd> ootds = ootdService.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.listOf(ootds)));
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.listOf(ootds)));
     }
 
     @GetMapping("/ootds/{ootdId}")
-    public ResponseEntity<CommonApiResponse<OotdDTO>> getOotdById(@PathVariable(name = "ootdId") Long ootdId) {
+    public ResponseEntity<CommonApiResponse<OotdDTO.Response>> getOotdById(@PathVariable(name = "ootdId") Long ootdId) {
         Ootd ootd = ootdService.findOotdById(ootdId);
-        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.of(ootd)));
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.of(ootd)));
     }
 
     @PostMapping("/ootds")
     public ResponseEntity<CommonApiResponse<?>> createOotd(Authentication authentication,
-                                                           @RequestPart(name = "image", required = false) MultipartFile image,
-                                                           @RequestPart(name = "ootd") OotdDTO ootdDTO) {
+                                                           @RequestPart(name = "image") MultipartFile image,
+                                                           @RequestPart(name = "ootd") OotdDTO.Request ootdDTO) {
         // 현재 로그인한 사용자 조회
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
         // Ootd 사진 및 내용 저장
-        Ootd ootd = Ootd.of(ootdDTO);
+        Ootd ootd = OotdDTO.Request.toEntity(ootdDTO);
         ootdService.createOotd(member, ootd, image);
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
@@ -57,24 +57,26 @@ public class OotdController implements OotdControllerDoc {
 
     @PutMapping("/ootds")
     public ResponseEntity<CommonApiResponse<?>> updateOotd(Authentication authentication,
-                                                           @RequestPart(name = "image", required = false) MultipartFile image,
-                                                           @RequestPart(name = "ootd") OotdDTO ootdDTO) throws IOException {
+                                                           @RequestPart(name = "image") MultipartFile image,
+                                                           @RequestPart(name = "ootd") OotdDTO.Request ootdDTO) throws IOException {
         // 현재 로그인한 사용자 조회
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
         // Ootd 정보 업데이트
-        Ootd ootd = Ootd.of(ootdDTO);
+        Ootd ootd = OotdDTO.Request.toEntity(ootdDTO);
         ootdService.updateOotd(ootd, image);
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
 
     @DeleteMapping("/ootds")
-    public void deleteOotd(Authentication authentication,
-                           @RequestPart(name = "ootd") OotdDTO ootdDTO) {
-        Ootd ootd = Ootd.of(ootdDTO);
-        ootdService.deleteOotdByOotdId(ootd);
+    public ResponseEntity<CommonApiResponse<?>> deleteOotd(Authentication authentication,
+                           @RequestPart(name = "ootd") OotdDTO.Request ootdDTO) {
+        Ootd ootd = OotdDTO.Request.toEntity(ootdDTO);
+        ootdService.deleteOotdById(ootd);
+
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
 
     @GetMapping("/ootds/images/{fileName}")
@@ -83,7 +85,7 @@ public class OotdController implements OotdControllerDoc {
     }
 
     @GetMapping("/ootds/bookmarks")
-    public ResponseEntity<CommonApiResponse<List<OotdDTO>>> getAllBookMarkOotd(Authentication authentication) {
+    public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllBookMarkOotd(Authentication authentication) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
@@ -94,12 +96,12 @@ public class OotdController implements OotdControllerDoc {
             ootds.add(bookMarkOotd.getOotd());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.listOf(ootds)));
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.listOf(ootds)));
     }
 
     @PostMapping("/ootds/bookmarks")
     public ResponseEntity<CommonApiResponse<?>> createBookMarkOotd(Authentication authentication,
-                                                                   OotdDTO ootdDTO) {
+                                                                   OotdDTO.Request ootdDTO) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
@@ -113,7 +115,7 @@ public class OotdController implements OotdControllerDoc {
 
     @DeleteMapping("/ootds/bookmarks")
     public ResponseEntity<CommonApiResponse<?>> deleteBookMarkOotd(Authentication authentication,
-                                                                   OotdDTO ootdDTO) {
+                                                                   OotdDTO.Request ootdDTO) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
@@ -126,7 +128,7 @@ public class OotdController implements OotdControllerDoc {
     }
 
     @GetMapping("/ootds/likes")
-    public ResponseEntity<CommonApiResponse<List<OotdDTO>>> getAllLikeOotd(Authentication authentication) {
+    public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllLikeOotd(Authentication authentication) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
@@ -137,12 +139,12 @@ public class OotdController implements OotdControllerDoc {
             ootds.add(likeOotd.getOotd());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.listOf(ootds)));
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.listOf(ootds)));
     }
 
     @PostMapping("/ootds/likes")
     public ResponseEntity<CommonApiResponse<?>> createLikeOotd(Authentication authentication,
-                                                                   OotdDTO ootdDTO) {
+                                                               OotdDTO.Request ootdDTO) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
@@ -156,7 +158,7 @@ public class OotdController implements OotdControllerDoc {
 
     @DeleteMapping("/ootds/likes")
     public ResponseEntity<CommonApiResponse<?>> deleteLikeOotd(Authentication authentication,
-                                                                   OotdDTO ootdDTO) {
+                                                               OotdDTO.Request ootdDTO) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 

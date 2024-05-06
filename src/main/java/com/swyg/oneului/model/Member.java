@@ -1,6 +1,5 @@
 package com.swyg.oneului.model;
 
-import com.swyg.oneului.dto.MemberDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,22 +16,15 @@ public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
-
     private String email;
-
     private String name;
-
     private String introduction;
-
     private String backgroundColor;
 
     @Column(unique = true)
     private String loginId;
-
     private String provider;
-
     private String providerId;
-
     private String refreshToken;
 
     @Enumerated(EnumType.STRING)
@@ -107,16 +99,5 @@ public class Member extends BaseEntity {
         this.name = member.getName();
         this.introduction = member.getIntroduction();
         this.backgroundColor = member.getBackgroundColor();
-    }
-
-    public static Member of(MemberDTO memberDTO) {
-        return Member.builder()
-                .memberId(memberDTO.getUserId())
-                .email(memberDTO.getEmail())
-                .name(memberDTO.getName())
-                .introduction(memberDTO.getIntroduction())
-                .backgroundColor(memberDTO.getBackgroundColor())
-                .role(memberDTO.getRole())
-                .build();
     }
 }

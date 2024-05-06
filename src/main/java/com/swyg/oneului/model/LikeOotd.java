@@ -16,7 +16,7 @@ public class LikeOotd {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ootdId")
+    @JoinColumn(name = "ootd_id")
     private Ootd ootd;
 
     @Builder

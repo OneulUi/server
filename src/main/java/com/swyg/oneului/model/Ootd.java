@@ -1,6 +1,5 @@
 package com.swyg.oneului.model;
 
-import com.swyg.oneului.dto.OotdDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +26,6 @@ public class Ootd extends BaseEntity {
     private List<OotdImage> ootdImages = new ArrayList<>();
 
     public Ootd() {
-
     }
 
     @Builder
@@ -48,17 +46,7 @@ public class Ootd extends BaseEntity {
         ootdImage.initOotd(this);
     }
 
-    public static Ootd of(OotdDTO ootdDTO) {
-        return Ootd.builder()
-                .ootdId(ootdDTO.getOotdId())
-                .review(ootdDTO.getReview())
-                .temperature(ootdDTO.getTemperature())
-                .humidity(ootdDTO.getHumidity())
-                .satisfaction(ootdDTO.getSatisfaction())
-                .build();
-    }
-
-    public void updateOotd(Ootd ootd) {
+    public void modifyOotd(Ootd ootd) {
         this.review = ootd.getReview();
         this.temperature = ootd.getTemperature();
         this.humidity = ootd.getHumidity();
