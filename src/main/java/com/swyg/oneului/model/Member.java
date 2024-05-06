@@ -45,6 +45,12 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Ootd> ootds = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<LikeOotd> likeOotds = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<BookMarkOotd> bookMarkOotds = new ArrayList<>();
+
     @Builder
     public Member(Long memberId, String email, String name, String introduction, String backgroundColor, String loginId, String provider, String providerId, String refreshToken, MemberRole role, Survey survey) {
         this.memberId = memberId;
@@ -85,6 +91,16 @@ public class Member extends BaseEntity {
     public void addOotd(Ootd ootd) {
         this.ootds.add(ootd);
         ootd.initMember(this);
+    }
+
+    public void addLikeOotd(LikeOotd likeOotd) {
+        this.likeOotds.add(likeOotd);
+        likeOotd.initMember(this);
+    }
+
+    public void addSaveOotd(BookMarkOotd bookMarkOotd) {
+        this.bookMarkOotds.add(bookMarkOotd);
+        bookMarkOotd.initMember(this);
     }
 
     public void updateProfile(Member member) {

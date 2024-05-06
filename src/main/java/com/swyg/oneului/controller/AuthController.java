@@ -30,9 +30,4 @@ public class AuthController implements AuthControllerDoc {
 
         return ResponseEntity.status(HttpStatus.OK).header("accessToken", accessToken).body(CommonApiResponse.createSuccess(memberDTO));
     }
-
-    @GetMapping("/after-login")
-    public String getTextAfterLogin(Authentication authentication) {
-        return "SUCCESS AUTHENTICATION";
-    }
 }

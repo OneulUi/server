@@ -22,7 +22,4 @@ public interface AuthControllerDoc {
     public ResponseEntity<CommonApiResponse<MemberDTO>> getSuccessResponseWithAccessToken(
             @Parameter(description = "인증 토큰", required = true) @RequestParam(name = "accessToken") String accessToken,
             @Parameter(description = "로그인된 아이디", required = true) @RequestParam(name = "loginId") String loginId);
-
-    @GetMapping("/auth/after-login")
-    public String getTextAfterLogin(Authentication authentication);
 }
