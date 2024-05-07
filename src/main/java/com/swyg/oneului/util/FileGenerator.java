@@ -25,6 +25,15 @@ public class FileGenerator {
     private final ResourceLoader resourceLoader;
 
     public Path generateAbsolutePath(String fileName) {
+        String resourcesPath = "src/main/resources";
+        String newFolderName = "uploads";
+        String newFolderPath = resourcesPath + File.separator + newFolderName;
+
+        File newFolder = new File(newFolderPath);
+        if (!newFolder.exists()) {
+            boolean mkdir = newFolder.mkdir();
+        }
+
         try {
             ClassPathResource resource = new ClassPathResource("uploads/");
             File file = resource.getFile();

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,6 +48,9 @@ public class OotdController implements OotdControllerDoc {
         // 현재 로그인한 사용자 조회
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
+        if (ObjectUtils.isEmpty(member)) {
+            throw new RuntimeException("로그인을 다시 진행해 주세요.");
+        }
 
         // Ootd 사진 및 내용 저장
         Ootd ootd = OotdDTO.Request.toEntity(ootdDTO);
