@@ -19,29 +19,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Component
 public class FileGenerator {
+    private static final String RESOURCES_PATH = "/home/ubuntu/images/";
     private static final String DELIMITER = "_";
     private static final String URL_FORMAT = "%s/%s";
     private static final String STORE_FILE_OUTSIDE_CURRENT_DIRECTORY_MESSAGE = "유효하지 않은 저장 경로입니다.";
     private final ResourceLoader resourceLoader;
 
     public Path generateAbsolutePath(String fileName) {
-        String resourcesPath = "src/main/resources";
-        String newFolderName = "uploads";
-        String newFolderPath = resourcesPath + File.separator + newFolderName;
-
-        File newFolder = new File(newFolderPath);
-        if (!newFolder.exists()) {
-            boolean mkdir = newFolder.mkdir();
-        }
-
-        try {
-            ClassPathResource resource = new ClassPathResource("uploads/");
-            File file = resource.getFile();
-            Path absolutePath = Paths.get(file.getAbsolutePath());
-            return absolutePath.resolve(Paths.get(fileName)).normalize().toAbsolutePath();
-        } catch (IOException e) {
-            throw new StorageException("파일이 존재하는 경로를 찾지 못했습니다.");
-        }
+        File file = new File(RESOURCES_PATH);
+        Path absolutePath = Paths.get(file.getAbsolutePath());
+        return absolutePath.resolve(Paths.get(fileName)).normalize().toAbsolutePath();
     }
 
     public Path generateReadAbsolutePath(String fileName) {
