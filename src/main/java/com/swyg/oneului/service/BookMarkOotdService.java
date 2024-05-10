@@ -31,7 +31,16 @@ public class BookMarkOotdService {
         bookMarkOotdRepository.deleteBookMarkOotdByMemberAndOotd(member, ootd);
     }
 
-    public List<BookMarkOotd> findAllBookMarkOotdByMember(Member member) {
-        return bookMarkOotdRepository.findBookMarkOotdByMember(member);
+    @Transactional
+    public void deleteBookMarkOotdByOotd(Ootd ootd) {
+        bookMarkOotdRepository.deleteBookMarkOotdByOotd(ootd);
+    }
+
+    public List<BookMarkOotd> findAllBookMarkOotdsByMember(Member member) {
+        return bookMarkOotdRepository.findBookMarkOotdsByMember(member);
+    }
+
+    public List<BookMarkOotd> findAllBookMarkOotdsByMemberAndOotd(Member member, Ootd ootd) {
+        return bookMarkOotdRepository.findBookMarkOotdsByMemberAndOotd(member, ootd);
     }
 }

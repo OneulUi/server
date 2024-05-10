@@ -101,6 +101,12 @@ public class TokenProvider {
             return false;
         }
 
+        String loginId = extractSubjectFromToken(token);
+        String isValidToken = tokenCacheLoader.getRefreshTokenFromTokenCache(loginId, token);
+        if (!StringUtils.hasText(isValidToken)) {
+            return false;
+        }
+
         Claims claims = parseClaims(token);
         return claims.getExpiration().after(new Date());
     }

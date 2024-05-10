@@ -16,7 +16,14 @@ public interface LikeOotdRepository extends JpaRepository<LikeOotd, Long> {
     @Query("select l from LikeOotd l where l.member = :member")
     public List<LikeOotd> findAllLikeOotdByMember(@Param("member") Member member);
 
+    @Query("select l from LikeOotd l where l.member = :member and l.ootd = :ootd")
+    public List<LikeOotd> findAllLikeOotdByMemberAndOotd(@Param("member") Member member, @Param("ootd") Ootd ootd);
+
     @Modifying
     @Query("delete from LikeOotd l where l.member = :member and l.ootd = :ootd")
     public void deleteLikeOotdByMemberAndOotd(@Param("member") Member member, @Param("ootd") Ootd ootd);
+
+    @Modifying
+    @Query("delete from LikeOotd l where l.ootd = :ootd")
+    public void deleteLikeOotdByOotd(@Param("ootd") Ootd ootd);
 }

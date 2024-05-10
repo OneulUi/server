@@ -15,9 +15,16 @@ import java.util.List;
 public interface BookMarkOotdRepository extends JpaRepository<BookMarkOotd, Long> {
 
     @Query("select b from BookMarkOotd b where b.member = :member")
-    public List<BookMarkOotd> findBookMarkOotdByMember(@Param("member") Member member);
+    public List<BookMarkOotd> findBookMarkOotdsByMember(@Param("member") Member member);
+
+    @Query("select b from BookMarkOotd b where b.member = :member and b.ootd = :ootd")
+    public List<BookMarkOotd> findBookMarkOotdsByMemberAndOotd(@Param("member") Member member, @Param("ootd") Ootd ootd);
 
     @Modifying
     @Query("delete from BookMarkOotd b where b.member = :member and b.ootd = :ootd")
     public void deleteBookMarkOotdByMemberAndOotd(@Param("member") Member member, @Param("ootd") Ootd ootd);
+
+    @Modifying
+    @Query("delete from BookMarkOotd b where b.ootd = :ootd")
+    public void deleteBookMarkOotdByOotd(@Param("ootd") Ootd ootd);
 }
