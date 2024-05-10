@@ -21,7 +21,7 @@ public class OotdService {
 
     public Ootd findOotdById(Long ootdId) {
         return ootdRepository.findById(ootdId)
-                .orElseThrow(() -> new NoSuchElementException("해당 ID의 OOTD가 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 OOTD가 존재하지 않습니다."));
     }
 
     public List<Ootd> findAllOotds() {
@@ -39,13 +39,11 @@ public class OotdService {
 
     @Transactional
     public void updateOotd(Ootd ootd, MultipartFile image) {
-        // OOTD 내용 수정
         Long ootdId = ootd.getOotdId();
         Ootd existingOotd = ootdRepository.findById(ootdId)
-                .orElseThrow(() -> new NoSuchElementException("해당 ID의 OOTD가 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 OOTD가 존재하지 않습니다."));
         existingOotd.modifyOotd(ootd);
         
-        // OOTD 이미지 수정
         ootdImageService.replaceOotdImage(existingOotd, image);
     }
 

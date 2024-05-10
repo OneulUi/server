@@ -20,12 +20,10 @@ public class Member extends BaseEntity {
     private String name;
     private String introduction;
     private String backgroundColor;
-
     @Column(unique = true)
     private String loginId;
     private String provider;
     private String providerId;
-    private String refreshToken;
 
     @Enumerated(EnumType.STRING)
     private MemberRole role;
@@ -44,7 +42,7 @@ public class Member extends BaseEntity {
     private List<BookMarkOotd> bookMarkOotds = new ArrayList<>();
 
     @Builder
-    public Member(Long memberId, String email, String name, String introduction, String backgroundColor, String loginId, String provider, String providerId, String refreshToken, MemberRole role, Survey survey) {
+    public Member(Long memberId, String email, String name, String introduction, String backgroundColor, String loginId, String provider, String providerId, MemberRole role, Survey survey) {
         this.memberId = memberId;
         this.email = email;
         this.name = name;
@@ -53,7 +51,6 @@ public class Member extends BaseEntity {
         this.loginId = loginId;
         this.provider = provider;
         this.providerId = providerId;
-        this.refreshToken = refreshToken;
         this.role = role;
         this.survey = survey;
     }

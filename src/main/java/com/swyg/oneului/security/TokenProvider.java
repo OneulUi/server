@@ -1,7 +1,7 @@
 package com.swyg.oneului.security;
 
 import com.swyg.oneului.exception.TokenException;
-import com.swyg.oneului.service.TokenService;
+import com.swyg.oneului.util.TokenCacheLoader;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
@@ -29,10 +29,10 @@ public class TokenProvider {
     @Value("${jwt.key}")
     private String key;
     private SecretKey secretKey;
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60L;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60L * 24;
     private static final String KEY_ROLE = "role";
-    private final TokenService tokenService;
+    private final TokenCacheLoader tokenCacheLoader;
 
     @PostConstruct
     private void initSecretKey() {
@@ -43,10 +43,8 @@ public class TokenProvider {
         return generateToken(authentication, ACCESS_TOKEN_EXPIRE_TIME);
     }
 
-    public void generateRefreshToken(Authentication authentication) {
-        String refreshToken = generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
-        String loginId = authentication.getName();
-        tokenService.updateRefreshToken(refreshToken, loginId);
+    public String generateRefreshToken(Authentication authentication) {
+        return generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
     }
 
     private String generateToken(Authentication authentication, long expireTime) {
@@ -107,12 +105,15 @@ public class TokenProvider {
         return claims.getExpiration().after(new Date());
     }
 
-    public String reissueAccessToken(String loginId) {
+    public String reissueAccessToken(String loginId, String accessToken) {
         if (StringUtils.hasText(loginId)) {
-            String refreshToken = tokenService.findMemberRefreshTokenByLoginId(loginId);
+            String refreshToken = tokenCacheLoader.getRefreshTokenFromTokenCache(loginId, accessToken);
+            tokenCacheLoader.deleteTokenData(loginId, accessToken);
 
             if (validateToken(refreshToken)) {
-                return generateAccessToken(getAuthentication(refreshToken));
+                String generatedAccessToken = generateAccessToken(getAuthentication(refreshToken));
+                tokenCacheLoader.putTokenData(loginId, generatedAccessToken, refreshToken);
+                return generatedAccessToken;
             }
         }
         throw new TokenException("토큰이 만료되었습니다. 다시 로그인해주세요.");

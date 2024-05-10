@@ -13,10 +13,9 @@ import java.util.List;
 
 @Tag(name = "설문정보", description = "설문정보 API")
 public interface SurveyControllerDoc {
-    @Operation(summary = "설문정보를 조회하기 위한 API")
+    @Operation(summary = "모든 설문정보를 조회하는 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청")})
+            @ApiResponse(responseCode = "200", description = "성공")})
     @GetMapping("/survey/options")
     ResponseEntity<CommonApiResponse<List<SurveyDTO.Response>>> getAllSurveys();
 }

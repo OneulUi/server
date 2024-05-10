@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+         updateCheck="false">
+
+    <cache name="tokenCache"
+           maxEntriesLocalHeap="10000"
+           maxEntriesLocalDisk="1000"
+           timeToLiveSeconds="86400"
+           timeToIdleSeconds="43200"
+           diskSpoolBufferSizeMB="20"
+           eternal="false"
+           memoryStoreEvictionPolicy="LFU">
+    </cache>
+
+    <cache name="addressCache"
+           maxEntriesLocalHeap="10000"
+           maxEntriesLocalDisk="1000"
+           diskSpoolBufferSizeMB="20"
+           eternal="true"
+           memoryStoreEvictionPolicy="LFU">
+    </cache>
+</ehcache>

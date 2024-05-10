@@ -25,7 +25,8 @@ public class WeatherService {
     private final ObjectMapper objectMapper;
     @Value("${weather.key}")
     private String WEATHER_API_KEY;
-    private static final String BASE_URL = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
+    @Value("${weather.url}")
+    private String BASE_URL;
     private static final String PAGE_NO = "1";
     private static final String NUM_OF_ROWS = "1000";
     private static final String DATA_TYPE = "JSON";

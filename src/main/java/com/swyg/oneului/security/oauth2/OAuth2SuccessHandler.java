@@ -2,6 +2,7 @@ package com.swyg.oneului.security.oauth2;
 
 import com.swyg.oneului.security.TokenProvider;
 import com.swyg.oneului.util.CookieUtils;
+import com.swyg.oneului.util.TokenCacheLoader;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,15 +27,17 @@ import static com.swyg.oneului.security.oauth2.OAuth2AuthorizationRequestReposit
 @Component
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final TokenProvider tokenProvider;
+    private final TokenCacheLoader tokenCacheLoader;
     private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
     private static final String DEFAULT_BASE_URL = "http://localhost:3000/login/redirect";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         // AccessToken, RefreshToken 발급
-        String accessToken = tokenProvider.generateAccessToken(authentication);
         String loginId = authentication.getName();
-        tokenProvider.generateRefreshToken(authentication);
+        String accessToken = tokenProvider.generateAccessToken(authentication);
+        String refreshToken = tokenProvider.generateRefreshToken(authentication);
+        tokenCacheLoader.putTokenData(loginId, accessToken, refreshToken);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("accessToken", accessToken);

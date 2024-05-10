@@ -30,7 +30,7 @@ public class OotdController implements OotdControllerDoc {
     private final MemberService memberService;
 
     @GetMapping("/ootds")
-    public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotd() {
+    public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotds() {
         List<Ootd> ootds = ootdService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.listOf(ootds)));
     }

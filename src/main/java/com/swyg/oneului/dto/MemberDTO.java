@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
-@Getter
 public class MemberDTO {
     @Setter
     @Getter
@@ -87,7 +85,7 @@ public class MemberDTO {
                     .name(member.getName())
                     .introduction(member.getIntroduction())
                     .backgroundColor(member.getBackgroundColor())
-                    .survey(SurveyDTO.Response.of(member.getSurvey()))
+                    .survey(member.getSurvey() != null ? SurveyDTO.Response.of(member.getSurvey()) : null)
                     .build();
         }
     }
