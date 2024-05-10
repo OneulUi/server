@@ -19,6 +19,9 @@ public class LikeOotd {
     @JoinColumn(name = "ootd_id")
     private Ootd ootd;
 
+    public LikeOotd() {
+    }
+
     @Builder
     public LikeOotd(Long likeOotdId, Member member, Ootd ootd) {
         this.likeOotdId = likeOotdId;

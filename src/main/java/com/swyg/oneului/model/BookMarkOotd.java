@@ -19,6 +19,9 @@ public class BookMarkOotd {
     @JoinColumn(name = "ootd_id")
     private Ootd ootd;
 
+    public BookMarkOotd() {
+    }
+
     @Builder
     public BookMarkOotd(Long bookMarkOotdId, Member member, Ootd ootd) {
         this.bookMarkOotdId = bookMarkOotdId;

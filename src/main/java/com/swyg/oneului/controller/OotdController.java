@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,49 +34,48 @@ public class OotdController implements OotdControllerDoc {
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.listOf(ootds)));
     }
 
-    @GetMapping("/ootds/{ootdId}")
-    public ResponseEntity<CommonApiResponse<OotdDTO.Response>> getOotdById(@PathVariable(name = "ootdId") Long ootdId) {
-        Ootd ootd = ootdService.findOotdById(ootdId);
-        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.of(ootd)));
-    }
-
     @PostMapping("/ootds")
     public ResponseEntity<CommonApiResponse<?>> createOotd(Authentication authentication,
                                                            @RequestPart(name = "image") MultipartFile image,
                                                            @RequestPart(name = "ootd") OotdDTO.Request ootdDTO) {
-        // 현재 로그인한 사용자 조회
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
-        if (ObjectUtils.isEmpty(member)) {
-            throw new RuntimeException("로그인을 다시 진행해 주세요.");
-        }
 
-        // Ootd 사진 및 내용 저장
         Ootd ootd = OotdDTO.Request.toEntity(ootdDTO);
         ootdService.createOotd(member, ootd, image);
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
 
-    @PutMapping("/ootds")
+    @GetMapping("/ootds/{ootdId}")
+    public ResponseEntity<CommonApiResponse<OotdDTO.Response>> getOotdById(@PathVariable(name = "ootdId") Long ootdId) {
+        Ootd ootd = ootdService.findOotdById(ootdId);
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.of(ootd)));
+    }
+
+    @PutMapping("/ootds/{ootdId}")
     public ResponseEntity<CommonApiResponse<?>> updateOotd(Authentication authentication,
+                                                           @PathVariable(name = "ootdId") Long ootdId,
                                                            @RequestPart(name = "image") MultipartFile image,
-                                                           @RequestPart(name = "ootd") OotdDTO.Request ootdDTO) throws IOException {
-        // 현재 로그인한 사용자 조회
+                                                           @RequestPart(name = "ootd") OotdDTO.Request ootdDTO) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
-        // Ootd 정보 업데이트
+        Ootd existingOotd = ootdService.findOotdByMemberAndOotdId(member, ootdId);
         Ootd ootd = OotdDTO.Request.toEntity(ootdDTO);
-        ootdService.updateOotd(ootd, image);
+        ootdService.updateOotd(existingOotd, ootd, image);
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
 
-    @DeleteMapping("/ootds")
+    @DeleteMapping("/ootds/{ootdId}")
     public ResponseEntity<CommonApiResponse<?>> deleteOotd(Authentication authentication,
-                           @RequestPart(name = "ootd") OotdDTO.Request ootdDTO) {
-        Ootd ootd = OotdDTO.Request.toEntity(ootdDTO);
+                                                           @PathVariable(name = "ootdId") Long ootdId) {
+
+        String loginId = authentication.getName();
+        Member member = memberService.findMemberByLoginId(loginId);
+
+        Ootd ootd = ootdService.findOotdByMemberAndOotdId(member, ootdId);
         ootdService.deleteOotdById(ootd);
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
@@ -85,15 +83,36 @@ public class OotdController implements OotdControllerDoc {
 
     @GetMapping("/ootds/images/{fileName}")
     public ResponseEntity<byte[]> getOotdImageByFileName(@PathVariable(name = "fileName") String fileName) {
+
         return ootdImageService.findOotdImageByfileName(fileName);
     }
 
+    @GetMapping("/ootds/temperature")
+    public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotdsByTemperature(@RequestParam(name = "temperature") String temperature) {
+        List<Ootd> ootds = ootdService.findAllOotdsByTemperature(temperature);
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.listOf(ootds)));
+    }
+
+    @GetMapping("/ootds/humidity")
+    public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotdsByHumidity(@RequestParam(name = "humidity") String humidity) {
+        List<Ootd> ootds = ootdService.findAllOotdsByHumidity(humidity);
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.listOf(ootds)));
+    }
+
+    @GetMapping("/ootds/weather")
+    public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotdsByTemperatureAndHumidity(@RequestParam(name = "temperature") String temperature,
+                                                                                                         @RequestParam(name = "humidity") String humidity) {
+        List<Ootd> ootds = ootdService.findAllOotdsByTemperatureAndHumidity(temperature, humidity);
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.listOf(ootds)));
+    }
+
     @GetMapping("/ootds/bookmarks")
+
     public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllBookMarkOotd(Authentication authentication) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
-        List<BookMarkOotd> bookMarkOotds = bookMarkOotdService.findAllBookMarkOotdByMember(member);
+        List<BookMarkOotd> bookMarkOotds = bookMarkOotdService.findAllBookMarkOotdsByMember(member);
 
         List<Ootd> ootds = new ArrayList<>();
         for (BookMarkOotd bookMarkOotd : bookMarkOotds) {
@@ -112,7 +131,10 @@ public class OotdController implements OotdControllerDoc {
         Long ootdId = ootdDTO.getOotdId();
         Ootd ootd = ootdService.findOotdById(ootdId);
 
-        bookMarkOotdService.createBookMarkOotd(member, ootd);
+        List<BookMarkOotd> bookMarkOotds = bookMarkOotdService.findAllBookMarkOotdsByMemberAndOotd(member, ootd);
+        if (bookMarkOotds.isEmpty()) {
+            bookMarkOotdService.createBookMarkOotd(member, ootd);
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
@@ -155,7 +177,10 @@ public class OotdController implements OotdControllerDoc {
         Long ootdId = ootdDTO.getOotdId();
         Ootd ootd = ootdService.findOotdById(ootdId);
 
-        likeOotdService.createLikeOotd(member, ootd);
+        List<LikeOotd> likeOotds = likeOotdService.findAllLikeOotdByMemberAndOotd(member, ootd);
+        if (likeOotds.isEmpty()) {
+            likeOotdService.createLikeOotd(member, ootd);
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }

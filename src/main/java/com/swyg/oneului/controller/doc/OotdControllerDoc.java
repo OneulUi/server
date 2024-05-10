@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Tag(name = "OOTD", description = "OOTD API")
@@ -42,18 +41,19 @@ public interface OotdControllerDoc {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
-    @PutMapping("/ootds")
+    @PutMapping("/ootds/{ootdId}")
     ResponseEntity<CommonApiResponse<?>> updateOotd(Authentication authentication,
+                                                    @PathVariable(name = "ootdId") Long ootdId,
                                                     @RequestPart(name = "image") MultipartFile image,
-                                                    @RequestPart(name = "ootd") OotdDTO.Request ootdDTO) throws IOException;
+                                                    @RequestPart(name = "ootd") OotdDTO.Request ootdDTO);
 
     @Operation(summary = "기존에 등록된 OOTD 삭제 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
-    @DeleteMapping("/ootds")
+    @DeleteMapping("/ootds/{ootdId}")
     ResponseEntity<CommonApiResponse<?>> deleteOotd(Authentication authentication,
-                                                    @RequestPart(name = "ootd") OotdDTO.Request ootdDTO);
+                                                    @PathVariable(name = "ootdId") Long ootdId);
 
     @Operation(summary = "OOTD 이미지를 가져오기 위한 API")
     @ApiResponses(value = {
@@ -107,4 +107,27 @@ public interface OotdControllerDoc {
     @DeleteMapping("/ootds/likes")
     ResponseEntity<CommonApiResponse<?>> deleteLikeOotd(Authentication authentication,
                                                         OotdDTO.Request ootdDTO);
+
+
+    @Operation(summary = "온도로 OOTD 조회하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
+    @GetMapping("/ootds/temperature")
+    ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotdsByTemperature(@RequestParam(name = "temperature") String temperature);
+
+    @Operation(summary = "습도로 OOTD 조회하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
+    @GetMapping("/ootds/humidity")
+    ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotdsByHumidity(@RequestParam(name = "humidity") String humidity);
+
+    @Operation(summary = "온도와 습도로 OOTD 조회하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
+    @GetMapping("/ootds/weather")
+    ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotdsByTemperatureAndHumidity(@RequestParam(name = "temperature") String temperature,
+                                                                                                  @RequestParam(name = "humidity") String humidity);
 }

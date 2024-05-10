@@ -71,18 +71,22 @@ public class OotdDTO {
         
         @Schema(description = "OOTD 작성할 때 등록한 이미지")
         private List<OotdImageDTO.Response> ootdImages;
+        
+        @Schema(description = "OOTD 작성자 정보")
+        private MemberDTO.Response member;
 
         public Response() {
         }
 
         @Builder
-        public Response(Long ootdId, String review, String temperature, String humidity, String satisfaction, List<OotdImageDTO.Response> ootdImages) {
+        public Response(Long ootdId, String review, String temperature, String humidity, String satisfaction, List<OotdImageDTO.Response> ootdImages, MemberDTO.Response member) {
             this.ootdId = ootdId;
             this.review = review;
             this.temperature = temperature;
             this.humidity = humidity;
             this.satisfaction = satisfaction;
             this.ootdImages = ootdImages;
+            this.member = member;
         }
 
         public static OotdDTO.Response of(Ootd ootd) {
@@ -93,6 +97,7 @@ public class OotdDTO {
                     .humidity(ootd.getHumidity())
                     .satisfaction(ootd.getSatisfaction())
                     .ootdImages(OotdImageDTO.Response.listOf(ootd.getOotdImages()))
+                    .member(MemberDTO.Response.of(ootd.getMember()))
                     .build();
         }
 

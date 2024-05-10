@@ -31,7 +31,16 @@ public class LikeOotdService {
         likeOotdRepository.deleteLikeOotdByMemberAndOotd(member, ootd);
     }
 
+    @Transactional
+    public void deleteLikeOotdByOotd(Ootd ootd) {
+        likeOotdRepository.deleteLikeOotdByOotd(ootd);
+    }
+
     public List<LikeOotd> findAllLikeOotdByMember(Member member) {
         return likeOotdRepository.findAllLikeOotdByMember(member);
+    }
+
+    public List<LikeOotd> findAllLikeOotdByMemberAndOotd(Member member, Ootd ootd) {
+        return likeOotdRepository.findAllLikeOotdByMemberAndOotd(member, ootd);
     }
 }
