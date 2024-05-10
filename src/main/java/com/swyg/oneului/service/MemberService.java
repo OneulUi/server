@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -15,40 +16,35 @@ import java.util.List;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public Member findMemberByLoginId(String loginId) {
+    private Member getMemberEntityByLoginId(String loginId) {
         List<Member> members = memberRepository.findMemberByLoginId(loginId);
         if (!members.isEmpty()) {
             return members.get(0);
         }
-        return null;
+
+        throw new NoSuchElementException("존재하지 않는 회원입니다.");
+    }
+
+    public Member findMemberByLoginId(String loginId) {
+        return getMemberEntityByLoginId(loginId);
     }
 
     public Member findMemberAndSurveyByLoginId(String loginId) {
-        List<Member> members = memberRepository.findMemberByLoginId(loginId);
-        if (!members.isEmpty()) {
-            Member member = members.get(0);
-            Survey survey = member.getSurvey();
+        Member member = getMemberEntityByLoginId(loginId);
+        Survey survey = member.getSurvey();
 
-            return member;
-        }
-        return null;
+        return member;
     }
 
     @Transactional
     public void updateMemberSurvey(String loginId, Survey survey) {
-        List<Member> members = memberRepository.findMemberByLoginId(loginId);
-        if (!members.isEmpty()) {
-            Member member = members.get(0);
-            member.initSurvey(survey);
-        }
+        Member member = getMemberEntityByLoginId(loginId);
+        member.initSurvey(survey);
     }
 
     @Transactional
     public void updateMemberProfile(String loginId, Member member) {
-        List<Member> members = memberRepository.findMemberByLoginId(loginId);
-        if (!members.isEmpty()) {
-            Member loginedMember = members.get(0);
-            loginedMember.updateProfile(member);
-        }
+        Member loginedMember = getMemberEntityByLoginId(loginId);
+        loginedMember.updateProfile(member);
     }
 }

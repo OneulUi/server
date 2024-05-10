@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.NoSuchElementException;
+
 @RestControllerAdvice
 public class ExceptionResponseHandler {
     @ExceptionHandler(SignatureException.class)
@@ -42,6 +44,11 @@ public class ExceptionResponseHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<CommonApiResponse<?>> handleRuntimeException(RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CommonApiResponse.createError(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CommonApiResponse.createError(e.getMessage()));
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<CommonApiResponse<?>> handleNoSuchElementException(NoSuchElementException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(CommonApiResponse.createError(e.getMessage()));
     }
 }

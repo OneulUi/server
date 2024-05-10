@@ -21,7 +21,7 @@ public interface WeatherControllerDoc {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
     @GetMapping("/weather/current")
-    ResponseEntity<CommonApiResponse<List<WeatherDTO.Response>>> getCurrentWeather(
+    ResponseEntity<CommonApiResponse<List<WeatherDTO.Response>>> getCurrentWeathers(
             @Parameter(description = "날짜", required = true, example = "20240505") @RequestParam String baseDate,
             @Parameter(description = "주소", required = true, example = "서울특별시 강서구") @RequestParam String address) throws IOException;
 
@@ -30,7 +30,7 @@ public interface WeatherControllerDoc {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
     @GetMapping("/weather/hourly")
-    ResponseEntity<CommonApiResponse<List<WeatherDTO.Response>>> getHourlyWeather(
+    ResponseEntity<CommonApiResponse<List<WeatherDTO.Response>>> getHourlyWeathers(
             @Parameter(description = "날짜", required = true, example = "20240505") @RequestParam String baseDate,
             @Parameter(description = "주소", required = true, example = "서울특별시 강서구") @RequestParam String address) throws IOException;
 }

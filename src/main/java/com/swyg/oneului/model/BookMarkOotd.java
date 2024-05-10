@@ -29,4 +29,8 @@ public class BookMarkOotd {
     public void initMember(Member member) {
         this.member = member;
     }
+
+    public void initOotd(Ootd ootd) {
+        this.ootd = ootd;
+    }
 }

@@ -1,6 +1,7 @@
 package com.swyg.oneului.dto;
 
 import com.swyg.oneului.model.OotdImage;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,13 +9,14 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter
-@Getter
 public class OotdImageDTO {
     @Setter
     @Getter
     public static class Request {
+        @Schema(description = "OOTD 이미지 고유 번호")
         private Long ootdImageId;
+
+        @Schema(description = "파일명")
         private String fileName;
 
         public Request() {
@@ -37,7 +39,10 @@ public class OotdImageDTO {
     @Setter
     @Getter
     public static class Response {
+        @Schema(description = "OOTD 이미지 고유 번호")
         private Long ootdImageId;
+
+        @Schema(description = "파일명")
         private String fileName;
 
         public Response() {

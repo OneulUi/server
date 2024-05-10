@@ -1,7 +1,6 @@
 package com.swyg.oneului.dto;
 
 import com.swyg.oneului.model.Ootd;
-import com.swyg.oneului.model.OotdImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +9,6 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter
-@Getter
 public class OotdDTO {
     @Setter
     @Getter

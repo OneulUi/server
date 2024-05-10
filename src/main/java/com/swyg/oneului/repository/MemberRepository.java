@@ -12,8 +12,4 @@ import java.util.List;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findMemberByLoginId(String loginId);
-
-    @Modifying
-    @Query("update Member m set m.refreshToken = :refreshToken where m.loginId = :loginId")
-    void updateRefreshToken(@Param("refreshToken") String refreshToken, @Param("loginId") String loginId);
 }

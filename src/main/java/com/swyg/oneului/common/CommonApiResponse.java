@@ -17,6 +17,7 @@ public class CommonApiResponse<T> {
 
     private static final String SUCCESS_MESSAGE = "정상적으로 처리되었습니다.";
     private static final String FAIL_MESSAGE = "유효하지 않은 값을 입력하셨습니다.";
+    private static final String ERROR_MESSAGE = "에러가 발생했습니다.";
 
     private String status;
     private T data;
@@ -53,7 +54,6 @@ public class CommonApiResponse<T> {
         return new CommonApiResponse<>(FAIL_STATUS, errors, FAIL_MESSAGE);
     }
 
-    // 예외 발생으로 API 호출 실패시 반환
     public static CommonApiResponse<?> createError(String message) {
         return new CommonApiResponse<>(ERROR_STATUS, null, message);
     }

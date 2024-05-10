@@ -1,18 +1,17 @@
 package com.swyg.oneului.util;
 
 import com.swyg.oneului.model.AddressPosition;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -21,12 +20,13 @@ import java.util.Iterator;
 public class ExcelCacheLoader {
     private final Cache cache;
 
-    public ExcelCacheLoader(CacheManager cacheManager) {
+    public ExcelCacheLoader() {
+        CacheManager cacheManager = CacheManager.getInstance();
         this.cache = cacheManager.getCache("addressCache");
     }
 
-    public void extractExcelData() throws IOException{
-        try(InputStream inputStream = getClass().getResourceAsStream("/address.xlsx")) {
+    public void extractExcelData() throws IOException {
+        try (InputStream inputStream = getClass().getResourceAsStream("/address.xlsx")) {
             ZipSecureFile.setMinInflateRatio(0);
             Workbook workbook = new XSSFWorkbook(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
@@ -53,16 +53,17 @@ public class ExcelCacheLoader {
                             .ny(ny)
                             .build();
 
-                    cache.put(key, addressPosition);
+                    Element element = new Element(key, addressPosition);
+                    cache.put(element);
                 }
             }
         }
     }
 
     public AddressPosition getPositionFromAddressCache(String key) {
-        Cache.ValueWrapper valueWrapper = cache.get(key);
-        if (valueWrapper != null) {
-            return (AddressPosition) valueWrapper.get();
+        Element element = cache.get(key);
+        if (element != null) {
+            return (AddressPosition) element.getObjectValue();
         }
         return null;
     }

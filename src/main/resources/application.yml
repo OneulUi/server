@@ -1,4 +1,7 @@
 spring:
+  cache:
+    ehcache:
+      config: classpath:ehcache.xml
   devtools:
     restart:
       enabled: false
@@ -35,6 +38,7 @@ jwt:
   key: ${api.jwt.key}
 weather:
   key: ${api.weather.key}
+  url: ${api.weather.url}
 
 springdoc:
   packages-to-scan: com.swyg.oneului

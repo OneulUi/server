@@ -9,13 +9,11 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter
-@Getter
 public class SurveyDTO {
     @Setter
     @Getter
     public static class Request {
-        @Schema(description = "선택한 설문정보 ID", defaultValue = "1")
+        @Schema(description = "설문정보 고유 번호")
         private Long surveyId;
 
         public Request() {
@@ -36,10 +34,10 @@ public class SurveyDTO {
     @Setter
     @Getter
     public static class Response {
-        @Schema(description = "저장된 설문정보 ID")
+        @Schema(description = "저장된 설문정보 고유 번호")
         private Long surveyId;
 
-        @Schema(description = "저장된 설문정보 항목내용")
+        @Schema(description = "저장된 설문정보 항목 내용")
         private String options;
 
         @Schema(description = "저장된 설문정보의 가중치")

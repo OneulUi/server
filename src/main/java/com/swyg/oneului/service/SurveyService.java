@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -22,8 +22,8 @@ public class SurveyService {
     }
 
     public Survey findSurveyBySurveyId(Long surveyId) {
-        Optional<Survey> survey = surveyRepository.findSurveyBySurveyId(surveyId);
-        return survey.orElse(null);
+        return surveyRepository.findSurveyBySurveyId(surveyId)
+                .orElseThrow(() -> new NoSuchElementException("해당 설문조사 정보가 존재하지 않습니다."));
     }
 
     public List<Survey> findAllSurveys() {

@@ -64,7 +64,7 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(matcherRegistry -> {
                     matcherRegistry
-                            .requestMatchers("/", "/hello", "/auth/success", "/weather/**").permitAll()
+                            .requestMatchers("/", "/hello", "/weather/**").permitAll()
                             .requestMatchers(PathRequest.toH2Console()).permitAll()
                             .anyRequest().authenticated();
                 })

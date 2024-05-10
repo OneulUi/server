@@ -18,10 +18,9 @@ import java.util.List;
 public interface OotdControllerDoc {
     @Operation(summary = "업로드된 모든 OOTD를 조회하는 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청")})
+            @ApiResponse(responseCode = "200", description = "성공")})
     @GetMapping("/ootds")
-    ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotd();
+    ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotds();
 
     @Operation(summary = "OOTD 단건 조회 API")
     @ApiResponses(value = {

@@ -4,7 +4,6 @@ import com.swyg.oneului.model.Member;
 import com.swyg.oneului.model.OAuth2Details;
 import com.swyg.oneului.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -34,11 +33,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     private Member findUserByLoginIdOrSaveIfNotFound(Member member) {
         List<Member> members = memberRepository.findMemberByLoginId(member.getLoginId());
         if (members.isEmpty()) {
-            try {
-                return memberRepository.save(member);
-            } catch (DataIntegrityViolationException e) {
-                return members.get(0);
-            }
+            return memberRepository.save(member);
         }
         return members.get(0);
     }

@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/survey")
 @RestController
 public class SurveyController implements SurveyControllerDoc {
     private final SurveyService surveyService;
 
-    @GetMapping("/options")
+    @GetMapping("/survey/options")
     public ResponseEntity<CommonApiResponse<List<SurveyDTO.Response>>> getAllSurveys() {
         List<Survey> surveys = surveyService.findAllSurveys();
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(SurveyDTO.Response.listOf(surveys)));
