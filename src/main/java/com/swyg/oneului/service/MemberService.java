@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -17,12 +17,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     private Member getMemberEntityByLoginId(String loginId) {
-        List<Member> members = memberRepository.findMemberByLoginId(loginId);
-        if (!members.isEmpty()) {
-            return members.get(0);
-        }
-
-        throw new NoSuchElementException("존재하지 않는 회원입니다.");
+        Optional<Member> optionalMember = memberRepository.findMemberByLoginId(loginId);
+        return optionalMember.orElseThrow(() -> {
+            throw new NoSuchElementException("존재하지 않는 회원입니다.");
+        });
     }
 
     public Member findMemberByLoginId(String loginId) {

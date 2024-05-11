@@ -17,7 +17,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @Service
 public class OAuth2UserService extends DefaultOAuth2UserService {
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @Transactional
     @Override
@@ -31,10 +31,6 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private Member findUserByLoginIdOrSaveIfNotFound(Member member) {
-        List<Member> members = memberRepository.findMemberByLoginId(member.getLoginId());
-        if (members.isEmpty()) {
-            return memberRepository.save(member);
-        }
-        return members.get(0);
+        return memberService.findMemberByLoginId(member.getLoginId());
     }
 }
