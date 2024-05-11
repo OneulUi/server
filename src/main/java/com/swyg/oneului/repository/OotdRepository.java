@@ -20,6 +20,6 @@ public interface OotdRepository extends JpaRepository<Ootd, Long> {
     @Query("select o from Ootd o where o.member = :member and o.ootdId = :ootdId")
     public Ootd findOotdByMemberAndOotdId(@Param("member") Member member, @Param("ootdId") Long ootdId);
 
-    @Query("select o from Ootd o where o.temperature = :temperature and humidity = :humidity")
+    @Query("select o from Ootd o where o.temperature = :temperature and o.humidity = :humidity")
     public List<Ootd> findAllOotdsByTemperatureAndHumidity(@Param("temperature") String temperature, @Param("humidity") String humidity);
 }
