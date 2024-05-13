@@ -76,10 +76,8 @@ public class MemberServiceTest {
         // given
         String loginId = "myLoginId";
         String profile = "myProfile";
-        String backgroundColor = "red";
         Member member = creatMemberFixtureWithoutSurvey(loginId);
         Member profileInfo = Member.builder()
-                .backgroundColor(backgroundColor)
                 .introduction(profile)
                 .build();
 
@@ -89,7 +87,6 @@ public class MemberServiceTest {
         memberService.updateMemberProfile(loginId, profileInfo);
 
         // then
-        assertThat(member.getBackgroundColor()).isEqualTo(backgroundColor);
         assertThat(member.getIntroduction()).isEqualTo(profile);
     }
 
