@@ -1,6 +1,8 @@
 package com.swyg.oneului.controller.doc;
 
 import com.swyg.oneului.common.CommonApiResponse;
+import com.swyg.oneului.dto.BookMarkOotdDTO;
+import com.swyg.oneului.dto.LikeOotdDTO;
 import com.swyg.oneului.dto.OotdDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,7 +37,7 @@ public interface OotdControllerDoc {
     @PostMapping("/ootds")
     ResponseEntity<CommonApiResponse<?>> createOotd(Authentication authentication,
                                                     @RequestPart(name = "image") MultipartFile image,
-                                                    @RequestPart(name = "ootd") OotdDTO.Request ootdDTO);
+                                                    @RequestPart(name = "ootd") OotdDTO.Create ootdDTO);
 
     @Operation(summary = "기존에 등록된 OOTD 수정 API")
     @ApiResponses(value = {
@@ -45,7 +47,7 @@ public interface OotdControllerDoc {
     ResponseEntity<CommonApiResponse<?>> updateOotd(Authentication authentication,
                                                     @PathVariable(name = "ootdId") Long ootdId,
                                                     @RequestPart(name = "image") MultipartFile image,
-                                                    @RequestPart(name = "ootd") OotdDTO.Request ootdDTO);
+                                                    @RequestPart(name = "ootd") OotdDTO.Update ootdDTO);
 
     @Operation(summary = "기존에 등록된 OOTD 삭제 API")
     @ApiResponses(value = {
@@ -75,15 +77,15 @@ public interface OotdControllerDoc {
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
     @PostMapping("/ootds/bookmarks")
     ResponseEntity<CommonApiResponse<?>> createBookMarkOotd(Authentication authentication,
-                                                            OotdDTO.Request ootdDTO);
+                                                            BookMarkOotdDTO.Create ootdDTO);
 
     @Operation(summary = "선택한 OOTD를 북마크에서 삭제하는 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
-    @DeleteMapping("/ootds/bookmarks")
+    @DeleteMapping("/ootds/bookmarks/{ootdId}")
     ResponseEntity<CommonApiResponse<?>> deleteBookMarkOotd(Authentication authentication,
-                                                            OotdDTO.Request ootdDTO);
+                                                            @PathVariable(name = "ootdId") Long ootdId);
 
     @Operation(summary = "좋아요를 누른 OOTD를 조회하는 API")
     @ApiResponses(value = {
@@ -98,16 +100,15 @@ public interface OotdControllerDoc {
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
     @PostMapping("/ootds/likes")
     ResponseEntity<CommonApiResponse<?>> createLikeOotd(Authentication authentication,
-                                                        OotdDTO.Request ootdDTO);
+                                                        LikeOotdDTO.Create ootdDTO);
 
     @Operation(summary = "선택한 OOTD를 좋아요 보관함에 삭제하는 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 인자 값")})
-    @DeleteMapping("/ootds/likes")
+    @DeleteMapping("/ootds/likes/{ootdId}")
     ResponseEntity<CommonApiResponse<?>> deleteLikeOotd(Authentication authentication,
-                                                        OotdDTO.Request ootdDTO);
-
+                                                        @PathVariable(name = "ootdId") Long ootdId);
 
     @Operation(summary = "온도로 OOTD 조회하는 API")
     @ApiResponses(value = {

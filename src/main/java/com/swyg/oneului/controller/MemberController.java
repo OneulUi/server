@@ -33,10 +33,10 @@ public class MemberController implements MemberControllerDoc {
     @PutMapping("/member")
     public ResponseEntity<CommonApiResponse<?>> updateMemberProfileByLoginId(
             Authentication authentication,
-            @RequestBody MemberDTO.Request memberDTO) {
+            @RequestBody MemberDTO.Update memberDTO) {
 
         String loginId = authentication.getName();
-        memberService.updateMemberProfile(loginId, MemberDTO.Request.toEntity(memberDTO));
+        memberService.updateMemberProfile(loginId, MemberDTO.Update.toEntity(memberDTO));
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
