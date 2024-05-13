@@ -18,9 +18,12 @@ public class MemberService {
 
     private Member getMemberEntityByLoginId(String loginId) {
         Optional<Member> optionalMember = memberRepository.findMemberByLoginId(loginId);
-        return optionalMember.orElseThrow(() -> {
-            throw new NoSuchElementException("존재하지 않는 회원입니다.");
-        });
+        return optionalMember.orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+    }
+
+    public Member findMemberByLoginIdOrSaveInNotFound(Member member) {
+        Optional<Member> optionalMember = memberRepository.findMemberByLoginId(member.getLoginId());
+        return optionalMember.orElseGet(() -> memberRepository.save(member));
     }
 
     public Member findMemberByLoginId(String loginId) {

@@ -32,7 +32,7 @@ public interface MemberControllerDoc {
     @PutMapping("/member")
     ResponseEntity<CommonApiResponse<?>> updateMemberProfileByLoginId(
             @Parameter(description = "인증 객체", required = true) Authentication authentication,
-            @Parameter(description = "회원 정보 DTO", required = true) @RequestBody MemberDTO.Request memberDTO);
+            @Parameter(description = "회원 정보 DTO", required = true) @RequestBody MemberDTO.Update memberDTO);
 
     @Operation(summary = "현재 로그인한 회원이 설문정보를 선택할 때 저장하는 API")
     @ApiResponses(value = {

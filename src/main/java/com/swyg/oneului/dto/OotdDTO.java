@@ -12,6 +12,78 @@ import java.util.List;
 public class OotdDTO {
     @Setter
     @Getter
+    public static class Create {
+        @Schema(description = "OOTD 후기")
+        private String review;
+
+        @Schema(description = "OOTD 작성할 때 온도")
+        private String temperature;
+
+        @Schema(description = "OOTD 작성할 때 습도")
+        private String humidity;
+
+        @Schema(description = "OOTD 작성할 때 만족도", example = "Y 또는 N으로 값을 입력해주세요.")
+        private String satisfaction;
+
+        public Create() {
+        }
+
+        @Builder
+        public Create(String review, String temperature, String humidity, String satisfaction) {
+            this.review = review;
+            this.temperature = temperature;
+            this.humidity = humidity;
+            this.satisfaction = satisfaction;
+        }
+
+        public static Ootd toEntity(OotdDTO.Create ootdDTO) {
+            return Ootd.builder()
+                    .review(ootdDTO.getReview())
+                    .temperature(ootdDTO.getTemperature())
+                    .humidity(ootdDTO.getHumidity())
+                    .satisfaction(ootdDTO.getSatisfaction())
+                    .build();
+        }
+    }
+
+    @Setter
+    @Getter
+    public static class Update {
+        @Schema(description = "OOTD 후기")
+        private String review;
+
+        @Schema(description = "OOTD 작성할 때 온도")
+        private String temperature;
+
+        @Schema(description = "OOTD 작성할 때 습도")
+        private String humidity;
+
+        @Schema(description = "OOTD 작성할 때 만족도", example = "Y 또는 N으로 값을 입력해주세요.")
+        private String satisfaction;
+
+        public Update() {
+        }
+
+        @Builder
+        public Update(Long ootdId, String review, String temperature, String humidity, String satisfaction) {
+            this.review = review;
+            this.temperature = temperature;
+            this.humidity = humidity;
+            this.satisfaction = satisfaction;
+        }
+
+        public static Ootd toEntity(OotdDTO.Update ootdDTO) {
+            return Ootd.builder()
+                    .review(ootdDTO.getReview())
+                    .temperature(ootdDTO.getTemperature())
+                    .humidity(ootdDTO.getHumidity())
+                    .satisfaction(ootdDTO.getSatisfaction())
+                    .build();
+        }
+    }
+
+    @Setter
+    @Getter
     public static class Request {
         @Schema(description = "OOTD 게시물 번호", example = "신규 등록시 입력하지 말아주세요.")
         private Long ootdId;

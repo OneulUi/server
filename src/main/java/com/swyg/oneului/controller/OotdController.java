@@ -2,6 +2,8 @@ package com.swyg.oneului.controller;
 
 import com.swyg.oneului.common.CommonApiResponse;
 import com.swyg.oneului.controller.doc.OotdControllerDoc;
+import com.swyg.oneului.dto.BookMarkOotdDTO;
+import com.swyg.oneului.dto.LikeOotdDTO;
 import com.swyg.oneului.dto.OotdDTO;
 import com.swyg.oneului.model.BookMarkOotd;
 import com.swyg.oneului.model.LikeOotd;
@@ -37,11 +39,11 @@ public class OotdController implements OotdControllerDoc {
     @PostMapping("/ootds")
     public ResponseEntity<CommonApiResponse<?>> createOotd(Authentication authentication,
                                                            @RequestPart(name = "image") MultipartFile image,
-                                                           @RequestPart(name = "ootd") OotdDTO.Request ootdDTO) {
+                                                           @RequestPart(name = "ootd") OotdDTO.Create ootdDTO) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
-        Ootd ootd = OotdDTO.Request.toEntity(ootdDTO);
+        Ootd ootd = OotdDTO.Create.toEntity(ootdDTO);
         ootdService.createOotd(member, ootd, image);
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
@@ -57,12 +59,12 @@ public class OotdController implements OotdControllerDoc {
     public ResponseEntity<CommonApiResponse<?>> updateOotd(Authentication authentication,
                                                            @PathVariable(name = "ootdId") Long ootdId,
                                                            @RequestPart(name = "image") MultipartFile image,
-                                                           @RequestPart(name = "ootd") OotdDTO.Request ootdDTO) {
+                                                           @RequestPart(name = "ootd") OotdDTO.Update ootdDTO) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
         Ootd existingOotd = ootdService.findOotdByMemberAndOotdId(member, ootdId);
-        Ootd ootd = OotdDTO.Request.toEntity(ootdDTO);
+        Ootd ootd = OotdDTO.Update.toEntity(ootdDTO);
         ootdService.updateOotd(existingOotd, ootd, image);
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
@@ -107,7 +109,6 @@ public class OotdController implements OotdControllerDoc {
     }
 
     @GetMapping("/ootds/bookmarks")
-
     public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllBookMarkOotd(Authentication authentication) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
@@ -124,7 +125,7 @@ public class OotdController implements OotdControllerDoc {
 
     @PostMapping("/ootds/bookmarks")
     public ResponseEntity<CommonApiResponse<?>> createBookMarkOotd(Authentication authentication,
-                                                                   OotdDTO.Request ootdDTO) {
+                                                                   BookMarkOotdDTO.Create ootdDTO) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
@@ -139,15 +140,13 @@ public class OotdController implements OotdControllerDoc {
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
 
-    @DeleteMapping("/ootds/bookmarks")
+    @DeleteMapping("/ootds/bookmarks/{ootdId}")
     public ResponseEntity<CommonApiResponse<?>> deleteBookMarkOotd(Authentication authentication,
-                                                                   OotdDTO.Request ootdDTO) {
+                                                                   @PathVariable(name = "ootdId") Long ootdId) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
-        Long ootdId = ootdDTO.getOotdId();
         Ootd ootd = ootdService.findOotdById(ootdId);
-
         bookMarkOotdService.deleteBookMarkOotd(member, ootd);
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
@@ -170,7 +169,7 @@ public class OotdController implements OotdControllerDoc {
 
     @PostMapping("/ootds/likes")
     public ResponseEntity<CommonApiResponse<?>> createLikeOotd(Authentication authentication,
-                                                               OotdDTO.Request ootdDTO) {
+                                                               LikeOotdDTO.Create ootdDTO) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
@@ -185,15 +184,13 @@ public class OotdController implements OotdControllerDoc {
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());
     }
 
-    @DeleteMapping("/ootds/likes")
+    @DeleteMapping("/ootds/likes/{ootdId}")
     public ResponseEntity<CommonApiResponse<?>> deleteLikeOotd(Authentication authentication,
-                                                               OotdDTO.Request ootdDTO) {
+                                                               @PathVariable(name = "ootdId") Long ootdId) {
         String loginId = authentication.getName();
         Member member = memberService.findMemberByLoginId(loginId);
 
-        Long ootdId = ootdDTO.getOotdId();
         Ootd ootd = ootdService.findOotdById(ootdId);
-
         likeOotdService.deleteLikeOotd(member, ootd);
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccessWithNoContent());

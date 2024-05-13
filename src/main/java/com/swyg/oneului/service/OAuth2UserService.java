@@ -31,6 +31,6 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private Member findUserByLoginIdOrSaveIfNotFound(Member member) {
-        return memberService.findMemberByLoginId(member.getLoginId());
+        return memberService.findMemberByLoginIdOrSaveInNotFound(member);
     }
 }
