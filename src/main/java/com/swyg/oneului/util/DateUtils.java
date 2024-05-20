@@ -26,4 +26,9 @@ public class DateUtils {
 
         return currentTime.format(formatter);
     }
+
+    public static String formatIssueDate(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return dateTime.format(formatter);
+    }
 }

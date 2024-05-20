@@ -11,6 +11,9 @@ import java.util.List;
 
 @Repository
 public interface OotdRepository extends JpaRepository<Ootd, Long> {
+    @Query("select o from Ootd o where o.member = :member")
+    public List<Ootd> findAllOotdsByMember(@Param("member") Member member);
+
     @Query("select o from Ootd o where o.temperature = :temperature")
     public List<Ootd> findAllOotdsByTemperature(@Param("temperature") String temperature);
 

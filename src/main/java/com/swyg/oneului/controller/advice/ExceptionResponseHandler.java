@@ -51,4 +51,9 @@ public class ExceptionResponseHandler {
     public ResponseEntity<CommonApiResponse<?>> handleNoSuchElementException(NoSuchElementException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(CommonApiResponse.createError(e.getMessage()));
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<CommonApiResponse<?>> handleException(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CommonApiResponse.createError(e.getMessage()));
+    }
 }

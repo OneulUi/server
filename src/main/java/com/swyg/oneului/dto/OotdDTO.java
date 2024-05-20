@@ -1,6 +1,7 @@
 package com.swyg.oneului.dto;
 
 import com.swyg.oneului.model.Ootd;
+import com.swyg.oneului.util.DateUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -140,6 +141,9 @@ public class OotdDTO {
         
         @Schema(description = "OOTD 작성할 때 만족도")
         private String satisfaction;
+
+        @Schema(description = "OOTD 작성일자")
+        private String issueDate;
         
         @Schema(description = "OOTD 작성할 때 등록한 이미지")
         private List<OotdImageDTO.Response> ootdImages;
@@ -151,12 +155,13 @@ public class OotdDTO {
         }
 
         @Builder
-        public Response(Long ootdId, String review, String temperature, String humidity, String satisfaction, List<OotdImageDTO.Response> ootdImages, MemberDTO.Response member) {
+        public Response(Long ootdId, String review, String temperature, String humidity, String satisfaction, String issueDate, List<OotdImageDTO.Response> ootdImages, MemberDTO.Response member) {
             this.ootdId = ootdId;
             this.review = review;
             this.temperature = temperature;
             this.humidity = humidity;
             this.satisfaction = satisfaction;
+            this.issueDate = issueDate;
             this.ootdImages = ootdImages;
             this.member = member;
         }
@@ -168,6 +173,7 @@ public class OotdDTO {
                     .temperature(ootd.getTemperature())
                     .humidity(ootd.getHumidity())
                     .satisfaction(ootd.getSatisfaction())
+                    .issueDate(DateUtils.formatIssueDate(ootd.getCreatedAt()))
                     .ootdImages(OotdImageDTO.Response.listOf(ootd.getOotdImages()))
                     .member(MemberDTO.Response.of(ootd.getMember()))
                     .build();

@@ -12,12 +12,12 @@ import com.swyg.oneului.model.Ootd;
 import com.swyg.oneului.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,13 +30,22 @@ public class OotdController implements OotdControllerDoc {
     private final BookMarkOotdService bookMarkOotdService;
     private final MemberService memberService;
 
+    @GetMapping("/ootds/me")
+    public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotdsByLoginedMember(Authentication authentication) {
+        String loginId = authentication.getName();
+        Member member = memberService.findMemberByLoginId(loginId);
+
+        List<Ootd> ootds = ootdService.findAllOotdsByMember(member);
+        return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.listOf(ootds)));
+    }
+
     @GetMapping("/ootds")
     public ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotds() {
         List<Ootd> ootds = ootdService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(CommonApiResponse.createSuccess(OotdDTO.Response.listOf(ootds)));
     }
 
-    @PostMapping("/ootds")
+    @PostMapping(value = "/ootds", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CommonApiResponse<?>> createOotd(Authentication authentication,
                                                            @RequestPart(name = "image") MultipartFile image,
                                                            @RequestPart(name = "ootd") OotdDTO.Create ootdDTO) {

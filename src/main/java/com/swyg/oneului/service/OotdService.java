@@ -30,6 +30,10 @@ public class OotdService {
         return ootdRepository.findOotdByMemberAndOotdId(member, ootdId);
     }
 
+    public List<Ootd> findAllOotdsByMember(Member member) {
+        return ootdRepository.findAllOotdsByMember(member);
+    }
+
     public List<Ootd> findAllOotds() {
         return ootdRepository.findAll();
     }

@@ -73,6 +73,9 @@ public class MemberDTO {
         @Schema(description = "회원 이메일")
         private String email;
 
+        @Schema(description = "회원 사진")
+        private String picture;
+
         @Schema(description = "회원 이름")
         private String name;
 

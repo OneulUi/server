@@ -55,6 +55,7 @@ public class Member extends BaseEntity {
 
     public static Member toEntity(String provider, Map<String, Object> attributes) {
         String email = (String) attributes.get("email");
+        String picture = (String) attributes.get("picture");
         String name = (String) attributes.get("name");
         String providerId = (String) attributes.get("sub");
         String loginId = provider + "_" + providerId;
