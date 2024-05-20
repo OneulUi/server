@@ -89,10 +89,9 @@ public class MemberDTO {
         }
 
         @Builder
-        public Response(Long memberId, String email, String picture, String name, String introduction, SurveyDTO.Response survey) {
+        public Response(Long memberId, String email, String name, String introduction, SurveyDTO.Response survey) {
             this.memberId = memberId;
             this.email = email;
-            this.picture = picture;
             this.name = name;
             this.introduction = introduction;
             this.survey = survey;
@@ -102,7 +101,6 @@ public class MemberDTO {
             return Response.builder()
                     .memberId(member.getMemberId())
                     .email(member.getEmail())
-                    .picture(member.getPicture())
                     .name(member.getName())
                     .introduction(member.getIntroduction())
                     .survey(member.getSurvey() != null ? SurveyDTO.Response.of(member.getSurvey()) : null)

@@ -18,7 +18,10 @@ public class SurveyService {
     @Transactional
     public void initSurveyOptions() {
         List<Survey> surveys = Survey.initSurveyOptions();
-        surveyRepository.saveAll(surveys);
+        List<Survey> originSurveys = surveyRepository.findAll();
+        if (originSurveys.isEmpty()) {
+            surveyRepository.saveAll(surveys);
+        }
     }
 
     public Survey findSurveyBySurveyId(Long surveyId) {
