@@ -17,6 +17,13 @@ import java.util.List;
 
 @Tag(name = "OOTD", description = "OOTD API")
 public interface OotdControllerDoc {
+    
+    @Operation(summary = "내가 등록한 모든 OOTD를 조회하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공")})
+    @GetMapping("/ootds/me")
+    ResponseEntity<CommonApiResponse<List<OotdDTO.Response>>> getAllOotdsByLoginedMember(Authentication authentication);
+
     @Operation(summary = "업로드된 모든 OOTD를 조회하는 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공")})

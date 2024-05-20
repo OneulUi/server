@@ -73,6 +73,9 @@ public class MemberDTO {
         @Schema(description = "회원 이메일")
         private String email;
 
+        @Schema(description = "회원 사진")
+        private String picture;
+
         @Schema(description = "회원 이름")
         private String name;
 
@@ -86,9 +89,10 @@ public class MemberDTO {
         }
 
         @Builder
-        public Response(Long memberId, String email, String name, String introduction, SurveyDTO.Response survey) {
+        public Response(Long memberId, String email, String picture, String name, String introduction, SurveyDTO.Response survey) {
             this.memberId = memberId;
             this.email = email;
+            this.picture = picture;
             this.name = name;
             this.introduction = introduction;
             this.survey = survey;
@@ -98,6 +102,7 @@ public class MemberDTO {
             return Response.builder()
                     .memberId(member.getMemberId())
                     .email(member.getEmail())
+                    .picture(member.getPicture())
                     .name(member.getName())
                     .introduction(member.getIntroduction())
                     .survey(member.getSurvey() != null ? SurveyDTO.Response.of(member.getSurvey()) : null)

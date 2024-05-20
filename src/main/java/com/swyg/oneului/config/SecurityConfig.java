@@ -64,7 +64,7 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(matcherRegistry -> {
                     matcherRegistry
-                            .requestMatchers("/", "/hello", "/weather/**").permitAll()
+                            .requestMatchers("/", "/hello", "/weather/**", "/ootds/images/**").permitAll()
                             .requestMatchers(PathRequest.toH2Console()).permitAll()
                             .anyRequest().authenticated();
                 })
@@ -91,7 +91,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://vercel-public-five.vercel.app", "https://vercel-public-five.vercel.app/"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("*"));
