@@ -19,6 +19,7 @@ public class Member extends BaseEntity {
     private String email;
     private String name;
     private String introduction;
+    private String picture;
     @Column(unique = true)
     private String loginId;
     private String provider;
@@ -41,11 +42,12 @@ public class Member extends BaseEntity {
     private List<BookMarkOotd> bookMarkOotds = new ArrayList<>();
 
     @Builder
-    public Member(Long memberId, String email, String name, String introduction, String loginId, String provider, String providerId, MemberRole role, Survey survey) {
+    public Member(Long memberId, String email, String name, String introduction, String picture, String loginId, String provider, String providerId, MemberRole role, Survey survey) {
         this.memberId = memberId;
         this.email = email;
         this.name = name;
         this.introduction = introduction;
+        this.picture = picture;
         this.loginId = loginId;
         this.provider = provider;
         this.providerId = providerId;
@@ -62,6 +64,7 @@ public class Member extends BaseEntity {
 
         return Member.builder()
                 .email(email)
+                .picture(picture)
                 .name(name)
                 .loginId(loginId)
                 .provider(provider)
